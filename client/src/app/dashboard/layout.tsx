@@ -1,21 +1,20 @@
+import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import type { Metadata } from "next";
-import "./globals.css";
-
 
 export const metadata: Metadata = {
-  title: "MOI Flight Delay Insurance",
+  title: "MOI Dashboard",
   description: "Flight Delay Insurance app powered by MOI blockchain.",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F3F7FC] h-screen px-[40px] mx-auto ">
-   
+      <body className="">
+        <Sidebar />
         {children}
       </body>
     </html>
