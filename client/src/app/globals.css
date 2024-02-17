@@ -4,9 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
-.main-div {
+.container {
   background-image: url("/background.png");
+  background-position: center;
   background-size: cover;
+  background-clip: content-box;
+  border-radius: "16px";
+  /* clip-path: polygon(5% 0%, 95% 5%, 0% 95%, 0% 95%, 5% 90%); */
+  /* padding-left: 150px;
+  padding-right: 150px; */
 }
 .sparkle {
   position: relative;

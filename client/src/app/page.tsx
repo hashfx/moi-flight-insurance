@@ -3,13 +3,14 @@ import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
   return (
-    <main className="main-div">
+    <main className="main-div ">
       <Navbar />
-      <div className="container mx-auto flex flex-col space-y-10 p-5 ">
-        <h1 className="w-1/2 text-5xl mx-auto font-bold bg-clip-text text-transparent bg-gradient-to-tr from-[#06162D] to-[#0C68BE] font-[Playfair] text-center">
-          Get Rid of delaying flights, get your precious time back monetarily
-        </h1>
-        <div className="h-full w-2/3 flex flex-col justify-center items-center space-y-5 bg-white rounded-lg mx-auto font-[Montserrat] p-10 border border-[#d4d4d4">
+      <div className="container mx-auto flex flex-col space-y-12 p-5 ">
+        <div className="flex flex-col text-6xl mx-auto font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#06162D] to-[#0C68BE] font-[Playfair] text-center">
+          <div className="mt-8">Get Rid of delaying flights,</div>
+          <div>get your precious time back monetarily</div>
+        </div>
+        <div className="h-full w-2/3 flex flex-col justify-center items-center space-y-5 bg-white rounded-lg mx-auto font-[Montserrat] p-10 border border-[#d4d4d4]">
           <div className="flex flex-row space-x-2 justify-center items-center">
             <Image
               src={"/flighticon.png"}

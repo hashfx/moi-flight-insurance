@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-
 export const metadata: Metadata = {
   title: "MOI Flight Delay Insurance",
   description: "Flight Delay Insurance app powered by MOI blockchain.",
@@ -14,10 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F3F7FC] h-screen px-[40px] mx-auto ">
-   
-        {children}
-      </body>
+      <body className="bg-[#F3F7FC] h-screen mx-auto">{children}</body>
     </html>
   );
 }
