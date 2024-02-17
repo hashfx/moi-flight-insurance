@@ -1,6 +1,6 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Wallet, validateMnemonic, VoyageProvider } from "js-moi-sdk";
 import { truncateStr } from "./truncateStr";
 
@@ -10,11 +10,10 @@ const AuthModel = () => {
   const { mnemonic, setMnemonic, setWallet, wallet } = useAuth();
   const [error, setError] = useState("");
   const [showConnectModal, setShowConnectModal] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleMnemonic = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMnemonic(e.target.value);
   };
-
   const handleConnect = async (phrase: string) => {
     try {
       if (!validateMnemonic(phrase)) {
@@ -46,10 +45,17 @@ const AuthModel = () => {
     <>
       {wallet ? (
         <button
-          className="bg-[#0085FF] p-2 rounded-lg text-white font-medium"
-          onClick={() => handleDisconnect()}
+          className="bg-[#0085FF] p-3 rounded-lg text-white font-medium w-30"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          Disconnect {wallet && truncateStr(wallet.getAddress(), 11)}
+          {wallet && truncateStr(wallet.getAddress(), 15)}
+          {isDropdownOpen ? (
+            <div className="absolute top-20 bg-white p-3 rounded-lg shadow-lg">
+              <button className="text-black" onClick={() => handleDisconnect()}>
+                Disconnect
+              </button>
+            </div>
+          ) : null}
         </button>
       ) : (
         <button
@@ -60,7 +66,7 @@ const AuthModel = () => {
         </button>
       )}
       {showConnectModal && (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-90 space-y-20 z-50">
+        <div className="fixed inset-0 flex flex-col items-center justify-start py-36 bg-black bg-opacity-90 space-y-40 z-50">
           <button
             type="button"
             className="font-bold text-2xl text-white"
@@ -68,8 +74,8 @@ const AuthModel = () => {
           >
             ✕
           </button>
-          <form className="mt-5 flex flex-col space-y-5 sm:items-center">
-            <div className="w-full sm:max-w-xs">
+          <form className="mt-5 flex flex-col space-y-10 sm:items-center">
+            <div className="w-full">
               <label htmlFor="mnemonic" className="sr-only">
                 Authenticate
               </label>
@@ -79,7 +85,7 @@ const AuthModel = () => {
                 id="mnemonic"
                 value={mnemonic}
                 onChange={handleMnemonic}
-                className="p-2 rounded-xl"
+                className="p-2 rounded-xl outline-blue-500 active:border-blue-300 border-2 w-full"
                 placeholder="abba jabba dabba abba jabba dabba"
               />
             </div>
@@ -89,7 +95,7 @@ const AuthModel = () => {
               disabled={
                 !mnemonic || error !== "" || mnemonic.split(" ").length < 12
               }
-              className="mt-3 inline-flex w-full items-center justify-center rounded-md bg-blue-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:ml-3 sm:mt-0 sm:w-auto"
+              className=" rounded-md bg-cyan-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:ml-3 sm:mt-0  glow-on-hover"
             >
               Connect
             </button>

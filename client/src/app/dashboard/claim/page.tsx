@@ -1,6 +1,6 @@
 import React from "react";
+import Status from "@/components/Dashboard/Status/Status";
 import SearchBar from "@/components/Dashboard/Search/SearchBar";
-
 import AuthModel from "@/components/Auth/AuthModel";
 const page = () => {
   return (
@@ -9,6 +9,7 @@ const page = () => {
         <SearchBar />
         <AuthModel />
       </div>
+      <Status />
     </div>
   );
 };

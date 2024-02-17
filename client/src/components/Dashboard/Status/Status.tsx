@@ -6,8 +6,7 @@ import Primary from "@/components/Buttons/Primary";
 import Secondary from "@/components/Buttons/Secondary";
 const Status = () => {
   return (
-    <div className="w-[90%] my-6 flex flex-col justify-start gap-6 ">
-      <SearchBar />
+    <div className=" my-6 flex flex-col justify-start gap-6">
       {/* Main Box */}
       <div className="w-full">
         {/* Gradient Box */}

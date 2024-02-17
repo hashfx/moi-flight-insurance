@@ -5,7 +5,7 @@ import Link from "next/link";
 import AuthModel from "../Auth/AuthModel";
 const Navbar = () => {
   return (
-    <nav className="flex flex-row justify-between items-center py-5 font-[Montserrat] px-[150px]">
+    <nav className="grid grid-cols-3 justify-between place-items-center py-5 font-[Montserrat] ">
       <div className="flex items-center justify-center space-x-5">
         <Image
           src={"/logo.png"}
@@ -31,7 +31,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div>
-        <AuthModel/>
+        <AuthModel />
       </div>
     </nav>
   );

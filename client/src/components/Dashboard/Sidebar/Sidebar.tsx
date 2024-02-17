@@ -23,21 +23,21 @@ const Sidebar = () => {
         </div>
         <div className="flex flex-col justify-start items-start space-y-5">
           <Link
-            href={"/"}
+            href={"/dashboard"}
             className="text-gray-400 flex flex-row space-x-5 text-lg font-semibold justify-center items-center font-[Montserrat]"
           >
             <MdDashboard />
             <h1 className="">Dashboard</h1>
           </Link>
           <Link
-            href={"/dashboard"}
+            href={"/dashboard/status"}
             className="text-gray-400 flex flex-row space-x-5 text-lg font-semibold justify-center items-center font-[Montserrat]"
           >
             <MdOutlineFlight />
             <h1 className="">Flight Status</h1>
           </Link>
           <Link
-            href={"/"}
+            href={"/dashboard/claim"}
             className="text-gray-400 flex flex-row space-x-5 text-lg font-semibold justify-center items-center font-[Montserrat]"
           >
             <MdWallet />
@@ -47,7 +47,7 @@ const Sidebar = () => {
       </div>
       <div>
         <div>
-          <div className="flex flex-row space-x-5 text-lg font-light text-red-500 justify-center items-center font-[Montserrat]">
+          <div className="flex flex-row space-x-5 text-lg font-medium text-red-500 justify-center items-center font-[Montserrat]">
             <CiLogout />
             <h1 className="">Logout</h1>
           </div>

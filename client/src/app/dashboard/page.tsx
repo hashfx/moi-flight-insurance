@@ -1,10 +1,27 @@
 import React from "react";
 import SearchBar from "@/components/Dashboard/Search/SearchBar";
-import Status from "@/components/Dashboard/Status/Status";
+import AuthModel from "@/components/Auth/AuthModel";
+import Details from "@/components/Dashboard/Details/Details";
+import { IoBugOutline } from "react-icons/io5";
+
 const page = () => {
   return (
-    <div className="w-screen h-screen p-5">
-      <SearchBar />
+    <div className="w-screen h-screen p-5 select-none space-y-10 justify-between flex flex-col">
+      <div className="flex flex-row justify-between items-center">
+        <SearchBar />
+        <AuthModel />
+      </div>
+      <div className="container bg-opacity-35">
+        <Details />
+      </div>
+      <div className="flex flex-row justify-between items-center">
+        <p className="flex flex-row justify-center items-center space-x-2">
+          <IoBugOutline /> <span>Report an Issue</span>
+        </p>
+        <button className="bg-[#c5c5c5] p-3 rounded-lg text-gray-800">
+          Claim Insurance
+        </button>
+      </div>
     </div>
   );
 };
