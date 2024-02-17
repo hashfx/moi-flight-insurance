@@ -12,15 +12,14 @@ const Sidebar = () => {
   return (
     <div className="h-screen flex flex-col justify-between items-start w-1/5 p-10 bg-white">
       <div className="flex flex-col space-y-20">
-        <div className="flex flex-row items-center justify-center space-x-5">
+        <div className="flex flex-row items-start justify-start space-x-5">
           <Image
             src={"/logo.png"}
             width={1000}
             height={1000}
-            className="w-12 h-12"
+            className="w-16 h-16"
             alt="logo"
           />
-          <h1 className="font-semibold text-xs">MOI Flight Delay Insurance</h1>{" "}
         </div>
         <div className="flex flex-col justify-start items-start space-y-5">
           <Link
