@@ -13,7 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F3F7FC] h-screen mx-auto">{children}</body>
+      <body className="bg-[#F3F7FC] h-screen mx-auto flex w-screen gap-5">
+        {children}
+      </body>
     </html>
   );
 }

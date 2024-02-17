@@ -1,5 +1,5 @@
-import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import type { Metadata } from "next";
+import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 
 export const metadata: Metadata = {
   title: "MOI Dashboard",
@@ -13,7 +13,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-row gap-2">
+      <body className="flex w-screen">
         <Sidebar />
         {children}
       </body>
