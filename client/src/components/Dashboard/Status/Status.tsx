@@ -4,6 +4,9 @@ import { stageInfo } from "./stagesInfo";
 import Image from "next/image";
 import Primary from "@/components/Buttons/Primary";
 import Secondary from "@/components/Buttons/Secondary";
+import PrimaryDisabled from "@/components/Buttons/PrimaryDisabled";
+import SecondaryDisabled from "@/components/Buttons/SecondaryDisabled";
+import FlightOnTime from "./FlightOnTime";
 const Status = () => {
   return (
     <div className="w-[90%] my-6 flex flex-col justify-start gap-6 ">
@@ -58,6 +61,14 @@ const Status = () => {
           </div>
           <div className="w-full">
             <Secondary text="Buy Another Insurance" />
+          </div>
+        </div>
+        <div className="flex gap-5 w-full mt-5">
+          <div className="w-full">
+            <PrimaryDisabled text="Deposit" />
+          </div>
+          <div className="w-full">
+            <SecondaryDisabled text="Buy Another Insurance" />
           </div>
         </div>
       </div>
