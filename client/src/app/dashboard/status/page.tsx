@@ -1,10 +1,9 @@
 import React from "react";
-import SearchBar from "@/components/Dashboard/Search/SearchBar";
 import Status from "@/components/Dashboard/Status/Status";
 const page = () => {
   return (
-    <div className="w-screen h-screen p-5">
-      <SearchBar />
+    <div className="w-full ml-24">
+      <Status />
     </div>
   );
 };
