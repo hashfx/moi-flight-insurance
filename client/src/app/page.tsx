@@ -58,8 +58,7 @@ export default function Home() {
 
                   <h4 className="font-medium text-lg">
                     ₹ <s>1100</s>{" "}
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r text-2xl from-cyan-300 to-cyan-500  sparkle">
-                      {/* <Sparkles color="teal" overflowPx={8} /> */}
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r text-2xl from-cyan-300 to-cyan-500">
                       800{" "}
                     </span>
                     / user

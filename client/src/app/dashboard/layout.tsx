@@ -13,7 +13,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="">
+      <body className="flex">
         <Sidebar />
         {children}
       </body>
