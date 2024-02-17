@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
   return (
-    <main className="main-div ">
+    <main className="main-div w-full">
       <Navbar />
       <div className="container mx-auto flex flex-col space-y-12 p-5 ">
         <div className="flex flex-col text-6xl mx-auto font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#06162D] to-[#0C68BE] font-[Playfair] text-center">
