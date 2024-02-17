@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import AuthProvider from "@/context/AuthContext";
 
 export const metadata: Metadata = {
   title: "MOI Flight Delay Insurance",
@@ -13,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F3F7FC] h-screen mx-auto">{children}</body>
+      <body className="bg-[#F3F7FC] h-screen mx-auto">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

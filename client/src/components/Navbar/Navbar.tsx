@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AuthModel from "../Auth/AuthModel";
 const Navbar = () => {
   return (
     <nav className="flex flex-row justify-between items-center py-5 font-[Montserrat] px-[150px]">
@@ -30,14 +31,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div>
-        <button
-          className="bg-[#0085FF] p-2 rounded-lg text-white font-medium"
-          onClick={() => {
-            alert("Coming Soon");
-          }}
-        >
-          Connect
-        </button>
+        <AuthModel/>
       </div>
     </nav>
   );
