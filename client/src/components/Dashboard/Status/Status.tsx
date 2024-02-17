@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "../Sidebar/Sidebar";
 import SearchBar from "../Search/SearchBar";
 import { stageInfo } from "./stagesInfo";
 import Image from "next/image";

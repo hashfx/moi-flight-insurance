@@ -8,8 +8,8 @@ const SearchBar = () => {
           src={"/search-icon.svg"}
           height={25}
           width={25}
-          alt="seach-icon"
-        ></Image>
+          alt="search-icon"
+        />
       </div>
       <div className="text-lg">
         <input
