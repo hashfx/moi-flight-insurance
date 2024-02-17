@@ -30,9 +30,9 @@ const Status = () => {
           </div>
         </div>
         {/* Stages */}
-        <div className="flex flex-col px-5 my-5">
-          <div className="text-md font-medium text-gray-500">Stages</div>
-          <div className="px-5 flex flex-col gap-4">
+        <div className="flex flex-col px-5 my-5 mb-8">
+          <div className="text-md font-normal text-gray-500">Stages</div>
+          <div className="px-5 flex flex-col">
             {stageInfo.map((singleStage, index) => {
               const { name, token } = singleStage;
               return (
@@ -45,7 +45,7 @@ const Status = () => {
                   </div>
                   <div className="flex flex-col gap-1 py-3">
                     <div className="text-md font-semibold">{name}</div>
-                    <div className="text-sm font-thin">{token} MOI</div>
+                    <div className="text-sm font-normal">{token} MOI</div>
                   </div>
                 </div>
               );
