@@ -14,10 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-[#F3F7FC] h-screen mx-auto flex">
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body className="bg-[#F3F7FC] h-screen mx-auto flex w-screen">
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
