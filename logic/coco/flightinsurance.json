@@ -1,0 +1,39 @@
+{
+  "syntax": "0.1.0",
+  "engine": {
+    "kind": "PISA",
+    "flags": []
+  },
+  "elements": [
+    {
+      "ptr": 0,
+      "kind": "state",
+      "data": {
+        "kind": "persistent",
+        "fields": [
+          {
+            "slot": 0,
+            "label": "owner",
+            "type": "address"
+          }
+        ]
+      }
+    },
+    {
+      "ptr": 1,
+      "deps": [
+        0
+      ],
+      "kind": "routine",
+      "data": {
+        "name": "Init!",
+        "kind": "deployer",
+        "accepts": [],
+        "returns": [],
+        "executes": {
+          "bin": []
+        }
+      }
+    }
+  ]
+}

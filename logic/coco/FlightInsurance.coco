@@ -1,0 +1,7 @@
+coco FlightInsurance
+
+state persistent:
+    owner Address
+
+endpoint deployer Init!():
+    pass
