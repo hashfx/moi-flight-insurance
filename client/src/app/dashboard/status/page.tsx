@@ -11,7 +11,7 @@ const page = () => {
         <SearchBar />
         <AuthModel />
       </div>
-      <div className="h-[90%] flex">
+      <div className="h-[90%] flex mt-2 px-4 gap-6">
         <Statusbar />
         <StatusList />
       </div>

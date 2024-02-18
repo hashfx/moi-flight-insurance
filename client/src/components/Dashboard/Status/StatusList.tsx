@@ -93,7 +93,7 @@ const data = [
 
 const StatusList = () => {
   return (
-    <div className="flex flex-col justify-start items-center w-full bg-white ml-10 rounded-lg border p-2">
+    <div className="flex flex-col gap-5 justify-start items-center w-full bg-white rounded-lg border p-2 px-5">
       <div className="flex flex-row justify-between items-center w-full">
         <div className="w-1/2 px-3 rounded-full py-1 flex items-center gap-3 outline-none bg-white text-black border m-2">
           <div>
@@ -108,7 +108,7 @@ const StatusList = () => {
             <input
               type="text"
               placeholder="Search Flight"
-              className="p-2 outline-none placeholder-[#A1A2AF]"
+              className="p-1 outline-none placeholder-[#A1A2AF]"
             />
           </div>
         </div>
@@ -116,7 +116,7 @@ const StatusList = () => {
           <FaInfoCircle />
         </button>
       </div>
-      <div className="list grid grid-cols-5 w-full place-items-center">
+      <div className="list grid grid-cols-5 w-full place-items-center px-[14px] mb-1">
         <div>ID</div>
         <div>Name</div>
         <div>Date</div>
@@ -127,20 +127,18 @@ const StatusList = () => {
         {data &&
           data.map((value, id) => {
             return (
-              <>
-                <div
-                  key={id}
-                  className="grid grid-cols-5 place-items-center border-b-2 p-4 text-gray-500 font-semibold font-['Nunito Sans']"
-                >
-                  <div>{value.id}</div>
-                  <div>{value.name}</div>
-                  <div>{value.date}</div>
-                  <div>{value.type}</div>
-                  <div>
-                    <StatusCard />
-                  </div>
+              <div
+                key={id}
+                className="grid grid-cols-5 place-items-center border-b-2 p-4 text-gray-500 font-normal font-['Nunito Sans']"
+              >
+                <div>{value.id}</div>
+                <div>{value.name}</div>
+                <div>{value.date}</div>
+                <div>{value.type}</div>
+                <div>
+                  <StatusCard />
                 </div>
-              </>
+              </div>
             );
           })}
       </div>

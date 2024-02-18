@@ -11,8 +11,8 @@ const Statusbar = () => {
   };
 
   return (
-    <div className="h-1/2 w-1/4 flex flex-col justify-center space-y-5 items-start bg-white p-10 border border-gray-300 rounded-lg">
-      <h1 className="font-semibold text-xl ">Flights</h1>
+    <div className="w-1/4 flex flex-col justify-start space-y-5 items-start bg-white py-10 px-6 border border-gray-300 rounded-lg">
+      <h1 className="font-semibold text-xl">Flights</h1>
       <div className="w-full flex flex-col space-y-2">
         <button
           className={`flex justify-between items-center flex-row w-full p-2 rounded-xl ${
