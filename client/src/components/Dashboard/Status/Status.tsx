@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import SearchBar from "../Search/SearchBar";
 import { stageInfo } from "./stagesInfo";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import PrimaryDisabled from "@/components/Buttons/PrimaryDisabled";
 import SecondaryDisabled from "@/components/Buttons/SecondaryDisabled";
 import FlightOnTime from "./FlightOnTime";
 const Status = () => {
+  const [isFlightOnTime, setIsFlightOnTime] = useState(true);
   return (
     <div className=" my-6 flex flex-col justify-start gap-6">
       {/* Main Box */}
@@ -31,45 +33,57 @@ const Status = () => {
           </div>
         </div>
         {/* Stages */}
-        <div className="flex flex-col px-5 my-5 mb-8">
-          <div className="text-md font-normal text-gray-500">Stages</div>
-          <div className="px-5 flex flex-col">
-            {stageInfo.map((singleStage, index) => {
-              const { name, token } = singleStage;
-              return (
-                <div
-                  className="flex items-center gap-2 border-b border-gray-300 py-2"
-                  key={index}
-                >
-                  <div className="p-1 bg-white rounded-md">
-                    <Image src={"/moi.png"} height={48} width={48} alt="icon" />
+        {isFlightOnTime && <FlightOnTime />}
+        {!isFlightOnTime && (
+          <div className="flex flex-col px-5 my-5 mb-8">
+            <div className="text-md font-normal text-gray-500">Stages</div>
+            <div className="px-5 flex flex-col">
+              {stageInfo.map((singleStage, index) => {
+                const { name, token } = singleStage;
+                return (
+                  <div
+                    className="flex items-center gap-2 border-b border-gray-300 py-2"
+                    key={index}
+                  >
+                    <div className="p-1 bg-white rounded-md">
+                      <Image
+                        src={"/moi.png"}
+                        height={48}
+                        width={48}
+                        alt="icon"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 py-3">
+                      <div className="text-md font-semibold">{name}</div>
+                      <div className="text-sm font-normal">{token} MOI</div>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 py-3">
-                    <div className="text-md font-semibold">{name}</div>
-                    <div className="text-sm font-normal">{token} MOI</div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
         {/* Buttons */}
-        <div className="flex gap-5 w-full">
-          <div className="w-full">
-            <Primary text="Deposit" />
+        {!isFlightOnTime && (
+          <div className="flex gap-5 w-full">
+            <div className="w-full">
+              <Primary text="Deposit" />
+            </div>
+            <div className="w-full">
+              <Secondary text="Buy Another Insurance" />
+            </div>
           </div>
-          <div className="w-full">
-            <Secondary text="Buy Another Insurance" />
+        )}
+        {isFlightOnTime && (
+          <div className="flex gap-5 w-full mt-5">
+            <div className="w-full">
+              <PrimaryDisabled text="Deposit" />
+            </div>
+            <div className="w-full">
+              <SecondaryDisabled text="Buy Another Insurance" />
+            </div>
           </div>
-        </div>
-        <div className="flex gap-5 w-full mt-5">
-          <div className="w-full">
-            <PrimaryDisabled text="Deposit" />
-          </div>
-          <div className="w-full">
-            <SecondaryDisabled text="Buy Another Insurance" />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

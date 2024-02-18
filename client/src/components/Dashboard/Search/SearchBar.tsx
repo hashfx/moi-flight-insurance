@@ -15,7 +15,7 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Search anything"
-          className="p-2 outline-none placeholder-[#A1A2AF]"
+          className=" outline-none placeholder-[#A1A2AF]"
         />
       </div>
     </div>
