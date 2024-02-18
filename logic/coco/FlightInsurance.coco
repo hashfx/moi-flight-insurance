@@ -1,7 +1,40 @@
 coco FlightInsurance
 
 state persistent:
-    owner Address
+    records []InsuranceRecord
+    admin Address
 
-endpoint deployer Init!():
-    pass
+class InsuranceRecord:
+    field recordId U64
+    field pnrNumber U64
+    field premiumAmount U256
+    field insuranceAmount U256
+    field status String
+
+endpoint deployer InitOwner!():
+    mutate Address(Sender)-> FlightInsurance.State.admin
+
+func onlyAdmin():
+    observe admin <- FlightInsurance.State.admin:
+        if(Address(Sender)!=admin):
+            throw "You are not authorized to perform this action"
+////////////////////////
+// Mutate Endpoints
+////////////////////////
+
+endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String):
+    onlyAdmin()
+    mutate records <- FlightInsurance.State.records:
+        var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
+        records=append(records,newRecord)
+   
+ ////////////////////////
+// Observe Endpoints
+///////////////////////
+
+endpoint invokable getInsuranceRecord(recordId U64)-> (records []InsuranceRecord):
+    observe records <- FlightInsurance.State.records
+    // @view
+    // func getInsuranceRecord(recordId: U64)-> insuranceRecord:
+    //     let record = Self.insuranceRecord[recordId]
+    //     return record

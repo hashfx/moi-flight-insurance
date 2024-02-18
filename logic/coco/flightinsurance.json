@@ -7,31 +7,298 @@
   "elements": [
     {
       "ptr": 0,
+      "kind": "constant",
+      "data": {
+        "type": "string",
+        "value": "0x06596f7520617265206e6f7420617574686f72697a656420746f20706572666f726d207468697320616374696f6e"
+      }
+    },
+    {
+      "ptr": 1,
+      "deps": [
+        2
+      ],
+      "kind": "typedef",
+      "data": "[]InsuranceRecord"
+    },
+    {
+      "ptr": 2,
+      "kind": "class",
+      "data": {
+        "name": "InsuranceRecord",
+        "fields": [
+          {
+            "slot": 0,
+            "label": "recordId",
+            "type": "u64"
+          },
+          {
+            "slot": 1,
+            "label": "pnrNumber",
+            "type": "u64"
+          },
+          {
+            "slot": 2,
+            "label": "premiumAmount",
+            "type": "u256"
+          },
+          {
+            "slot": 3,
+            "label": "insuranceAmount",
+            "type": "u256"
+          },
+          {
+            "slot": 4,
+            "label": "status",
+            "type": "string"
+          }
+        ],
+        "methods": []
+      }
+    },
+    {
+      "ptr": 3,
+      "deps": [
+        2
+      ],
       "kind": "state",
       "data": {
         "kind": "persistent",
         "fields": [
           {
             "slot": 0,
-            "label": "owner",
+            "label": "records",
+            "type": "[]InsuranceRecord"
+          },
+          {
+            "slot": 1,
+            "label": "admin",
             "type": "address"
           }
         ]
       }
     },
     {
-      "ptr": 1,
+      "ptr": 4,
       "deps": [
-        0
+        3
       ],
       "kind": "routine",
       "data": {
-        "name": "Init!",
+        "name": "InitOwner!",
         "kind": "deployer",
         "accepts": [],
         "returns": [],
         "executes": {
-          "bin": []
+          "bin": [
+            115,
+            0,
+            73,
+            0,
+            0,
+            129,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "ptr": 5,
+      "deps": [
+        0,
+        3
+      ],
+      "kind": "routine",
+      "data": {
+        "name": "onlyAdmin",
+        "kind": "local",
+        "accepts": [],
+        "returns": [],
+        "executes": {
+          "bin": [
+            128,
+            0,
+            1,
+            115,
+            1,
+            73,
+            1,
+            1,
+            70,
+            0,
+            1,
+            0,
+            98,
+            0,
+            0,
+            98,
+            0,
+            0,
+            17,
+            1,
+            11,
+            3,
+            1,
+            0,
+            17,
+            0,
+            0,
+            16,
+            0,
+            0,
+            65,
+            0,
+            1
+          ]
+        }
+      }
+    },
+    {
+      "ptr": 6,
+      "deps": [
+        2,
+        5,
+        3
+      ],
+      "kind": "routine",
+      "data": {
+        "name": "addInsuranceRecord!",
+        "kind": "invokable",
+        "accepts": [
+          {
+            "slot": 0,
+            "label": "pnrNumber",
+            "type": "u64"
+          },
+          {
+            "slot": 1,
+            "label": "premiumAmount",
+            "type": "u256"
+          },
+          {
+            "slot": 2,
+            "label": "insuranceAmount",
+            "type": "u256"
+          },
+          {
+            "slot": 3,
+            "label": "status",
+            "type": "string"
+          }
+        ],
+        "returns": [],
+        "executes": {
+          "bin": [
+            10,
+            0,
+            17,
+            1,
+            5,
+            12,
+            0,
+            1,
+            0,
+            128,
+            0,
+            0,
+            17,
+            1,
+            2,
+            40,
+            1,
+            1,
+            80,
+            2,
+            0,
+            82,
+            1,
+            0,
+            2,
+            4,
+            2,
+            0,
+            82,
+            1,
+            1,
+            2,
+            4,
+            2,
+            1,
+            82,
+            1,
+            2,
+            2,
+            4,
+            2,
+            2,
+            82,
+            1,
+            3,
+            2,
+            4,
+            2,
+            3,
+            82,
+            1,
+            4,
+            2,
+            36,
+            2,
+            0,
+            87,
+            2,
+            1,
+            36,
+            0,
+            2,
+            129,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "ptr": 7,
+      "deps": [
+        1,
+        2,
+        3
+      ],
+      "kind": "routine",
+      "data": {
+        "name": "getInsuranceRecord",
+        "kind": "invokable",
+        "accepts": [
+          {
+            "slot": 0,
+            "label": "recordId",
+            "type": "u64"
+          }
+        ],
+        "returns": [
+          {
+            "slot": 0,
+            "label": "records",
+            "type": "[]InsuranceRecord"
+          }
+        ],
+        "executes": {
+          "bin": [
+            17,
+            0,
+            1,
+            40,
+            0,
+            0,
+            128,
+            0,
+            0,
+            5,
+            0,
+            0
+          ]
         }
       }
     }
