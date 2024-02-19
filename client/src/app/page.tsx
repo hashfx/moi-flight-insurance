@@ -1,8 +1,23 @@
+'use client'
 import Image from "next/image";
 import Navbar from "@/components/Navbar/Navbar";
+import { flightDetails, useAuth } from '@/context/AuthContext';
+import Form from "@/components/Auth/Form";
+import { useState } from "react";
 
 export default function Home() {
+  const { setClaimDetails, setPnrNumber, wallet } = useAuth();
+  const [open, setOpen] = useState(false);
+  const handlePlanSelection = (planDetails: flightDetails) => {
+    if (!wallet) {
+      alert('First login')
+      return;
+    } 
+    setClaimDetails(planDetails);
+    setOpen(true);
+  };
   return (
+    <>
     <main className="main-div ">
       <Navbar />
       <div className="container mx-auto flex flex-col space-y-12 p-5 ">
@@ -24,6 +39,7 @@ export default function Home() {
           <input
             type="text"
             className=" border-b border-[#404040] outline-none p-2 "
+            onChange={(e) => setPnrNumber(e.target.value)}
             placeholder="A1KYRK"
           />
           <div className="flex justify-center items-center flex-col space-y-10">
@@ -46,7 +62,12 @@ export default function Home() {
                     <span> Real Time Settlement</span>
                   </p>
                 </div>
-                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl">
+                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl" onClick={
+                  () => handlePlanSelection({
+                    claimableAmount: "RS3000",
+                    premiumPaid: "FAMILY",
+                  })
+                }>
                   Claim for ₹ 3000 →
                 </button>
               </div>
@@ -79,7 +100,12 @@ export default function Home() {
                     <span> Every Purchase will cover 2 Flights</span>
                   </p>
                 </div>
-                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl">
+                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl" onClick={
+                  () => handlePlanSelection({
+                    claimableAmount: "RS8000",
+                    premiumPaid: "ENSURE_PRO",
+                  })
+                }>
                   Claim for ₹ 8000 →
                 </button>
               </div>
@@ -104,8 +130,13 @@ export default function Home() {
                     <span>Covers Single Flight</span>
                   </p>
                 </div>
-                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl">
-                  Claim for ₹ 10000 →
+                <button className="text-white bg-blue-500  font-medium px-4 py-2 rounded-2xl" onClick={
+                  () => handlePlanSelection({
+                    claimableAmount: "RS5000",
+                    premiumPaid: "BUSINESS",
+                  })
+                }>
+                  Claim for ₹ 5000 →
                 </button>
               </div>
             </div>
@@ -113,5 +144,7 @@ export default function Home() {
         </div>
       </div>
     </main>
+      <Form open={open} setOpen={(show: boolean) => setOpen(show)} />
+      </>
   );
 }
