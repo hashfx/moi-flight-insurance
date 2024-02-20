@@ -28,7 +28,7 @@ endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insura
         var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
         records=append(records,newRecord)
    
- ////////////////////////
+////////////////////////
 // Observe Endpoints
 ///////////////////////
 
