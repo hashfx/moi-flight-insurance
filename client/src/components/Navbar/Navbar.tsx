@@ -3,7 +3,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import AuthModel from "../Auth/AuthModel";
+import { useAuth } from "@/context/AuthContext";
 const Navbar = () => {
+  const { wallet } = useAuth();
   return (
     <nav className="grid grid-cols-3 justify-between place-items-center py-5 font-[Montserrat] ">
       <div className="flex items-center justify-center space-x-5">
@@ -17,18 +19,23 @@ const Navbar = () => {
         />
       </div>
       <div className="flex flex-row justify-center items-center space-x-5">
-        <Link
-          href={"/"}
-          className="font-medium active:text-blue-700 hover:text-blue-800"
-        >
-          Home
-        </Link>
-        <Link
-          href={"/dashboard"}
-          className="font-medium active:text-blue-700 hover:text-blue-800"
-        >
-          Dashboard
-        </Link>
+        {wallet && (
+          <>
+            {" "}
+            <Link
+              href={"/"}
+              className="font-medium active:text-blue-700 hover:text-blue-800"
+            >
+              Home
+            </Link>
+            <Link
+              href={"/dashboard"}
+              className="font-medium active:text-blue-700 hover:text-blue-800"
+            >
+              Dashboard
+            </Link>
+          </>
+        )}
       </div>
       <div>
         <AuthModel />

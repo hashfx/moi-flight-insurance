@@ -11,11 +11,11 @@ const SearchBar = () => {
           alt="search-icon"
         />
       </div>
-      <div className="text-lg">
+      <div className="text-lg w-full">
         <input
           type="text"
           placeholder="Search anything"
-          className=" outline-none placeholder-[#A1A2AF]"
+          className="w-full outline-none placeholder-[#A1A2AF]"
         />
       </div>
     </div>

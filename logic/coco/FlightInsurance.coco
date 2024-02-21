@@ -11,9 +11,21 @@ class InsuranceRecord:
     field insuranceAmount U256
     field status String
 
+    // method init(recordId U64, pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String):
+    //     self.recordId = recordId
+    //     self.pnrNumber = pnrNumber
+    //     self.premiumAmount = premiumAmount
+    //     self.insuranceAmount = insuranceAmount
+    //     self.status = status
+
 endpoint deployer InitOwner!():
     mutate Address(Sender)-> FlightInsurance.State.admin
+    // var record InsuranceRecord
+    // record.init(0, 0, 0, 0, "Active")
 
+////////////////////////
+// Internal Functions
+////////////////////////
 func onlyAdmin():
     observe admin <- FlightInsurance.State.admin:
         if(Address(Sender)!=admin):

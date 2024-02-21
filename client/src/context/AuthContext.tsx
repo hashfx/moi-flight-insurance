@@ -31,6 +31,8 @@ interface AuthContextType {
   setClaimDetails: (claimDetails: flightDetails) => void;
   responseData: ResponseData;
   setResponseData: (responseData: ResponseData) => void;
+  showConnectModal: boolean;
+  setShowConnectModal: (showConnectModal: boolean) => void;
 }
 
 interface childProp {
@@ -43,10 +45,11 @@ const AuthProvider = ({ children }: childProp) => {
   const [mnemonic, setMnemonic] = useState("");
   const [wallet, setWallet] = useState();
   const [pnrNumber, setPnrNumber] = useState("");
+  const [showConnectModal, setShowConnectModal] = useState(false);
   const [claimDetails, setClaimDetails] = useState({} as flightDetails);
   const [responseData, setResponseData] = useState({} as ResponseData);
   return (
-    <AuthContext.Provider value={{ mnemonic, setMnemonic, setWallet, wallet, pnrNumber,setPnrNumber, claimDetails, setClaimDetails, responseData,setResponseData}}>
+    <AuthContext.Provider value={{ mnemonic, setMnemonic, setWallet, wallet, pnrNumber,setPnrNumber, claimDetails, setClaimDetails, responseData,setResponseData, showConnectModal, setShowConnectModal}}>
       {children}
     </AuthContext.Provider>
   );

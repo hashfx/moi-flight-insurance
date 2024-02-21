@@ -7,13 +7,24 @@ import { truncateStr } from "./truncateStr";
 const provider = new VoyageProvider("babylon");
 const account = "m/44'/6174'/7020'/0/0"; // 0th account path derivation
 const AuthModel = () => {
-  const { mnemonic, setMnemonic, setWallet, wallet } = useAuth();
+  const {
+    mnemonic,
+    setMnemonic,
+    setWallet,
+    wallet,
+    showConnectModal,
+    setShowConnectModal,
+  } = useAuth();
   const [error, setError] = useState("");
-  const [showConnectModal, setShowConnectModal] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const handleMnemonic = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMnemonic(e.target.value);
   };
+  //@ts-ignore
+  const isLoggedIn = JSON.parse(sessionStorage.getItem("loggedIn"));
+  // useEffect(() => {
+  //   setWallet(isLoggedIn);
+  // });
   const handleConnect = async (phrase: string) => {
     try {
       if (!validateMnemonic(phrase)) {
@@ -23,7 +34,8 @@ const AuthModel = () => {
       const wallet = new Wallet(provider);
       await wallet.fromMnemonic(mnemonic, account);
       setWallet(wallet);
-
+      // Assuming loggedIn is a boolean variable indicating the login status
+      sessionStorage.setItem("loggedIn", JSON.stringify(wallet));
       setError("");
       setShowConnectModal(false);
       setMnemonic("");
@@ -39,8 +51,11 @@ const AuthModel = () => {
 
   const handleDisconnect = () => {
     setWallet(null);
+    sessionStorage.removeItem("loggedIn");
     alert("Wallet disconnected");
   };
+
+  console.log(isLoggedIn);
   return (
     <>
       <div className="px-4">
@@ -51,9 +66,9 @@ const AuthModel = () => {
           >
             {wallet && truncateStr(wallet.getAddress(), 15)}
             {isDropdownOpen ? (
-              <div className="absolute top-20 bg-white p-3 rounded-lg shadow-lg">
+              <div className="absolute top-20 bg-white p-3 rounded-lg shadow-lg ">
                 <button
-                  className="text-black"
+                  className="text-red-400"
                   onClick={() => handleDisconnect()}
                 >
                   Disconnect

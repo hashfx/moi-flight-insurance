@@ -104,11 +104,11 @@ const StatusList = () => {
               alt="search-icon"
             />
           </div>
-          <div className="text-sm">
+          <div className="text-sm w-full">
             <input
               type="text"
               placeholder="Search Flight"
-              className="p-1 outline-none placeholder-[#A1A2AF]"
+              className="p-1 outline-none placeholder-[#A1A2AF] w-full"
             />
           </div>
         </div>

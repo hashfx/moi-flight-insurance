@@ -6,11 +6,17 @@ import Form from "@/components/Auth/Form";
 import { useState } from "react";
 
 export default function Home() {
-  const { setClaimDetails, setPnrNumber, wallet } = useAuth();
+  const {
+    setClaimDetails,
+    setPnrNumber,
+    wallet,
+    showConnectModal,
+    setShowConnectModal,
+  } = useAuth();
   const [open, setOpen] = useState(false);
   const handlePlanSelection = (planDetails: flightDetails) => {
     if (!wallet) {
-      alert("First login");
+      setShowConnectModal(true);
       return;
     }
     setClaimDetails(planDetails);
@@ -50,7 +56,7 @@ export default function Home() {
                     <h1 className="font-semibold text-2xl text-[#4d4d4d]">
                       Family
                     </h1>
-                    <h4 className="font-medium text-lg">₹ 200 / user</h4>
+                    <h4 className="font-medium text-lg">₹ 199 / user</h4>
                   </div>
                   <div className="flex flex-col space-y-5">
                     <p className="flex flex-row items-center justify-start space-x-2">
@@ -71,10 +77,10 @@ export default function Home() {
                       })
                     }
                   >
-                    Claim for ₹ 3000 →
+                    Claim upto ₹ 3000 →
                   </button>
                 </div>
-                <div className="flex flex-col text-white justify-center items-center space-y-12 py-5 scale-110 px-4 bg-gradient-to-tr from-black to-gray-900 rounded-xl">
+                <div className="flex flex-col text-white justify-center items-center space-y-12 py-5 scale-110 px-4 bg-gradient-to-tr from-black to-gray-900 rounded-xl glow-on-hover">
                   <div className="border-b w-full flex flex-col justify-center items-center mx-auto">
                     <h1 className="font-semibold text-2xl text-white">
                       Ensure Pro
@@ -83,12 +89,12 @@ export default function Home() {
                     <h4 className="font-medium text-lg">
                       ₹ <s>1100</s>{" "}
                       <span className="bg-clip-text text-transparent bg-gradient-to-r text-2xl from-cyan-300 to-cyan-500">
-                        800{" "}
+                        799{" "}
                       </span>
                       / user
                     </h4>
                   </div>
-                  <div className="flex flex-col space-y-5">
+                  <div className="flex flex-col space-y-5 justify-start items-start">
                     <p className="flex flex-row items-center justify-start space-x-2">
                       <span>✅</span>
                       <span> Priority Claim Settlement</span>
@@ -111,7 +117,7 @@ export default function Home() {
                       })
                     }
                   >
-                    Claim for ₹ 8000 →
+                    Claim upto ₹ 8000 →
                   </button>
                 </div>
                 <div className="flex flex-col justify-center items-center space-y-12 py-2 px-4 bg-[#f5f5f5] rounded-xl">
@@ -119,7 +125,7 @@ export default function Home() {
                     <h1 className="font-semibold text-2xl text-[#4d4d4d]">
                       Business
                     </h1>
-                    <h4 className="font-medium text-lg">₹ 700 / user</h4>
+                    <h4 className="font-medium text-lg">₹ 699 / user</h4>
                   </div>
                   <div className="flex flex-col space-y-5 justify-start items-start">
                     <p className="flex flex-row items-center justify-start space-x-2">
@@ -144,7 +150,7 @@ export default function Home() {
                       })
                     }
                   >
-                    Claim for ₹ 5000 →
+                    Claim upto ₹ 5000 →
                   </button>
                 </div>
               </div>
