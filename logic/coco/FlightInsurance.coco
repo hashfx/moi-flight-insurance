@@ -30,6 +30,7 @@ func onlyAdmin():
     observe admin <- FlightInsurance.State.admin:
         if(Address(Sender)!=admin):
             throw "You are not authorized to perform this action"
+
 ////////////////////////
 // Mutate Endpoints
 ////////////////////////
@@ -39,7 +40,16 @@ endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insura
     mutate records <- FlightInsurance.State.records:
         var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
         records=append(records,newRecord)
-   
+
+endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
+    onlyAdmin()
+    mutate records <- FlightInsurance.State.records:
+        var record = records[recordId]
+        if(record.pnrNumber==pnrNumber):
+            record.status="Claimed"
+            records[recordId]=record
+        else:
+            throw "Record not found"
 ////////////////////////
 // Observe Endpoints
 ///////////////////////
