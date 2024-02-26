@@ -3,6 +3,7 @@ import SearchBar from "@/components/Dashboard/Search/SearchBar";
 import AuthModel from "@/components/Auth/AuthModel";
 import Details from "@/components/Dashboard/Details/Details";
 import { IoBugOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const page = () => {
   return (
@@ -15,9 +16,12 @@ const page = () => {
         <Details />
       </div>
       <div className="flex flex-row justify-between items-center">
-        <p className="flex flex-row justify-center items-center space-x-2">
+        <Link
+          href={"/report"}
+          className="flex flex-row justify-center items-center space-x-2"
+        >
           <IoBugOutline /> <span>Report an Issue</span>
-        </p>
+        </Link>
         <button className="bg-[#c5c5c5] p-3 rounded-lg text-gray-800">
           Claim Insurance
         </button>
