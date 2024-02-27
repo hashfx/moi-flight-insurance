@@ -24,13 +24,6 @@ class InsuranceRecord:
     field insuranceAmount U256
     field status String
 
-    // method init(recordId U64, pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String):
-    //     self.recordId = recordId
-    //     self.pnrNumber = pnrNumber
-    //     self.premiumAmount = premiumAmount
-    //     self.insuranceAmount = insuranceAmount
-    //     self.status = status
-
 endpoint deployer Init!(name String, symbol String, decimals U64, totalSupply U64):
     mutate Address(Sender)-> FlightInsurance.State.admin
     mutate name -> FlightInsurance.State.name
@@ -86,11 +79,12 @@ func burn!(account Address, value U64):
 // Mutate Endpoints
 ////////////////////////
 
-endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String):
+endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String)->(record InsuranceRecord):
     onlyAdmin()
     mutate records <- FlightInsurance.State.records:
         var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
         records=append(records,newRecord)
+        yield record newRecord
 
 endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
     onlyAdmin()
@@ -104,7 +98,6 @@ endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
 
 endpoint invokable Transfer!(to Address, value U64):
     transfer!(from: Address(Sender), to, value)
-
 
 endpoint invokable Approve!(spender Address, value U64):
     if spender == Address(0):

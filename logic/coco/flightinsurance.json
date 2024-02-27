@@ -729,7 +729,13 @@
             "type": "string"
           }
         ],
-        "returns": [],
+        "returns": [
+          {
+            "slot": 0,
+            "label": "record",
+            "type": "InsuranceRecord"
+          }
+        ],
         "executes": {
           "bin": [
             10,
@@ -794,6 +800,9 @@
             36,
             0,
             2,
+            5,
+            1,
+            0,
             129,
             0,
             7
