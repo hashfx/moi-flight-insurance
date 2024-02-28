@@ -1,0 +1,14 @@
+# Node Modules
+node_modules
+
+# Package Artifacts
+*.vsix
+
+# IDE Settings
+.idea
+
+.DS_Store
+
+**/server/out
+
+**/client/out
