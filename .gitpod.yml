@@ -9,3 +9,10 @@ tasks:
       echo 'export PATH=$PATH:~/.coco/bin' >> ~/.bashrc
       source ~/.bashrc  # Source Bashrc to apply changes
       coco version  # Verify Coco installation
+      cd vscode-coco-0.2.3/  # change dir to installed extension
+      npm install && npm run package && code --install-extension cocolang-0.2.3.vsix # install extension
+      cd ..
+      cd client/ && npm install
+      cd ..
+      cd logic/ && npm install
+      cd ..
