@@ -54,8 +54,4 @@ coco compile [path_to_coco.nut]
 coco labtest <module_name>
 ```
 
-## Contributions
-
-We are contributing ourselves, your help not required 🙂
-
 ### Thanking You
