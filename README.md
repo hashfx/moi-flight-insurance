@@ -33,8 +33,29 @@ Turn delays into W like a King 👑 </br>
 + npm install in ```cd client```
 + run frontend ```npm run dev```
 
+## Commands
+```powershell
+# get version of cocolang compiler
+coco version
+```
+
+```powershell
+# creates new coco.nut file
+coco nut init <module_name>
+```
+
+```powershell
+# compile .coco file
+coco compile [path_to_coco.nut]
+```
+
+```powershell
+# compile and runs logic using LogicLab utility
+coco labtest <module_name>
+```
+
 ## Contributions
 
-We are contributing ourself, your help not required 🙂
+We are contributing ourselves, your help not required 🙂
 
 ### Thanking You
