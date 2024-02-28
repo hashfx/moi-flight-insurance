@@ -3,7 +3,7 @@
 tasks:
   - name: Install Coco compiler
     init: |
-      curl -L https://cocolang.s3.ap-south-1.amazonaws.com/releases/v0.3.8/coco-0.3.8-linux-amd64.tar.gz
+      curl -L https://cocolang.s3.ap-south-1.amazonaws.com/releases/v0.3.8/coco-0.3.8-linux-amd64.tar.gz -o coco.tar.gz
   - name: Unarchive the download
     command: |
       mkdir -p ~/.coco/bin && tar -C ~/.coco/bin -xzf coco-0.3.8-linux-amd64.tar.gz
