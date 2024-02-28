@@ -6,7 +6,7 @@ tasks:
       curl -L https://cocolang.s3.ap-south-1.amazonaws.com/releases/v0.3.8/coco-0.3.8-linux-amd64.tar.gz -o coco.tar.gz
   - name: Unarchive the download
     command: |
-      mkdir -p ~/.coco/bin && tar -C ~/.coco/bin -xzf coco-0.3.8-linux-amd64.tar.gz
+      mkdir -p ~/.coco/bin && tar -C ~/.coco/bin -xzf coco.tar.gz
       rm coco.tar.gz  # Remove the downloaded file
   - name: Set environment variable
     command: |
