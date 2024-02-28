@@ -28,7 +28,7 @@ Turn delays into W like a King 👑 </br>
 ![Project Status: Under Development](https://img.shields.io/badge/Project_Status-Under_Development-yellow)
 <!-- ![Project Status: Completed](https://img.shields.io/badge/Project_Status-Completed-green) -->
 
-## Project Setup
+## Setup Project
 + Install Cocolang Compiler: ```https://cocolang.dev/releases```
 + npm install in ```cd client```
 + run frontend ```npm run dev```
