@@ -125,7 +125,7 @@ export default function Home() {
                     <h1 className="font-semibold text-2xl text-[#4d4d4d]">
                       Business
                     </h1>
-                    <h4 className="font-medium text-lg">₹ 699 / user</h4>
+                    <h4 className="font-medium text-lg">₹ 599 / user</h4>
                   </div>
                   <div className="flex flex-col space-y-5 justify-start items-start">
                     <p className="flex flex-row items-center justify-start space-x-2">

@@ -81,13 +81,25 @@ func burn!(account Address, value U64):
 
 endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String)->(record InsuranceRecord):
     onlyAdmin()
+
     mutate records <- FlightInsurance.State.records:
         var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
         records=append(records,newRecord)
         yield record newRecord
 
+// add insurance record logic
+//sabse pehle check karo ki record already exist karta hai ya nahi
+//agar exist karta hai toh throw error
+//3 pools rahenge, ek ensure pro jiska premium 799, ek family jiska premium 199 aur ek business jiska premium 599
+//agar nahi karta hai toh add karo
+//agar add ho gaya toh return karo
+
+//200000 = 1000 * 200
+
+
 endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
     onlyAdmin()
+    temp()
     mutate records <- FlightInsurance.State.records:
         var record = records[recordId]
         if(record.pnrNumber==pnrNumber):
