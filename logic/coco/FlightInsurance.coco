@@ -1,7 +1,8 @@
 coco FlightInsurance
 
+// Persistent state of the FlightInsurance module
 state persistent:
-    //token variables
+    // Internal Token state variables
     name String
     symbol String
     decimals U64
@@ -9,97 +10,55 @@ state persistent:
     balanceOf Map[Address]U64
     allowances Map[Address]Map[Address]U64
     nextClaims Map[Address]I64
-    //insurance variables
-    records []InsuranceRecord
+    // Flight Insurance state variables
+    records Map[String]InsuranceRecord
     admin Address
 
-
-const CLAIM_AMOUNT U64 = 100000
-const CLAIM_INTERVAL I64 = 30  // every 1 hour
-
 class InsuranceRecord:
-    field recordId U64
-    field pnrNumber U64
     field premiumAmount U256
-    field insuranceAmount U256
     field status String
 
+class FlightRecords:
+    field 
+
 endpoint deployer Init!(name String, symbol String, decimals U64, totalSupply U64):
-    mutate Address(Sender)-> FlightInsurance.State.admin
+    // For Token Initializations
     mutate name -> FlightInsurance.State.name
     mutate symbol -> FlightInsurance.State.symbol
     mutate decimals -> FlightInsurance.State.decimals
-
     mint!(account: Address(Sender), value: totalSupply)
+
+    // For FlightInsurance Initializations
+    mutate Address(Sender)-> FlightInsurance.State.admin
+
     // var record InsuranceRecord
-     // record.init(0, 0, 0, 0, "Active")
+    // record.init(0, 0, 0, 0, "Active")
 
 ////////////////////////
 // Internal Functions
 ////////////////////////
+
 func onlyAdmin():
     observe admin <- FlightInsurance.State.admin:
         if(Address(Sender)!=admin):
             throw "You are not authorized to perform this action"
 
-func transfer!(from Address, to Address, value U64):
-    if from == Address(0):
-        throw "Invalid Sender Address"
-    if to == Address(0):
-        throw "Invalid Recipient Address"
-    
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        if balanceOf[from] < value:
-            throw "Insufficient Balance"
-        
-        balanceOf[from] -= value
-        balanceOf[to] += value
-
-func mint!(account Address, value U64):
-    if account == Address(0):
-        throw "Invalid Receiver Address"
-
-    mutate totalSupply <- FlightInsurance.State.totalSupply:
-        totalSupply += value
-
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        balanceOf[account] += value
-
-func burn!(account Address, value U64):
-    if account == Address(0):
-        throw "Invalid Sender Address"
-
-    mutate totalSupply <- FlightInsurance.State.totalSupply:
-        totalSupply -= value
-
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        balanceOf[account] -= value
 
 ////////////////////////
-// Mutate Endpoints
+// Mutate/Write Endpoints
 ////////////////////////
 
-endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String)->(record InsuranceRecord):
+endpoint invokable AddInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String)->(record InsuranceRecord):
     onlyAdmin()
 
     mutate records <- FlightInsurance.State.records:
         var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
-        records=append(records,newRecord)
+        records = append(records,newRecord)
         yield record newRecord
 
-// add insurance record logic
-//sabse pehle check karo ki record already exist karta hai ya nahi
-//agar exist karta hai toh throw error
-//3 pools rahenge, ek ensure pro jiska premium 799, ek family jiska premium 199 aur ek business jiska premium 599
-//agar nahi karta hai toh add karo
-//agar add ho gaya toh return karo
-
-//200000 = 1000 * 200
-
-
-endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
+endpoint invokable ClaimInsurance!(pnrNumber U64, recordId U64):
     onlyAdmin()
-    temp()
+   
     mutate records <- FlightInsurance.State.records:
         var record = records[recordId]
         if(record.pnrNumber==pnrNumber):
@@ -108,78 +67,25 @@ endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
         else:
             throw "Record not found"
 
-endpoint invokable Transfer!(to Address, value U64):
-    transfer!(from: Address(Sender), to, value)
-
-endpoint invokable Approve!(spender Address, value U64):
-    if spender == Address(0):
-        throw "Invalid Spender Address"
-
-    var owner = Address(Sender)
-
-    mutate allowances <- FlightInsurance.State.allowances:
-        allowances[owner][spender] = value
-
-endpoint invokable TransferFrom!(from Address, to Address, value U64):
-    var spender = Address(Sender)
-    
-    mutate allowances <- FlightInsurance.State.allowances:
-        if allowances[from][spender] < value:
-            throw "Insufficient allowances"
-
-        allowances[from][spender] -= value
-
-    transfer!(from, to, value)
-
-endpoint invokable Claim!():
-    var account = Address(Sender)
-    observe nextClaims <- FlightInsurance.State.nextClaims:
-        if nextClaims[account] > Env.Timestamp():
-            throw "Next Claim at {nextClaims[address]}"
-
-    mint!(account, value: CLAIM_AMOUNT)
-
-    mutate nextClaims <- FlightInsurance.State.nextClaims:
-        nextClaims[account] = Env.Timestamp() + CLAIM_INTERVAL
 
 ////////////////////////
-// Observe Endpoints
+// Observe/Read Endpoints
 ///////////////////////
 
-endpoint invokable getInsuranceRecord(recordId U64)-> (records []InsuranceRecord):
-    observe records <- FlightInsurance.State.records
-
-endpoint invokable Name()->(name String):
-    observe name <- FlightInsurance.State.name
-
-endpoint invokable Symbol()->(symbol String):
-    observe symbol <- FlightInsurance.State.symbol
-
-endpoint invokable Decimals()->(decimals U64):
-    observe decimals <- FlightInsurance.State.decimals
-
-endpoint invokable TotalSupply()->(totalSupply U64):
-    observe totalSupply <- FlightInsurance.State.totalSupply
-
-endpoint invokable ClaimAmount()->(claimAmount U64):
-    yield claimAmount CLAIM_AMOUNT
-
-endpoint invokable ClaimInterval()->(claimInterval I64):
-    yield claimInterval CLAIM_INTERVAL
-
-endpoint invokable NextClaim(account Address)->(nextClaim I64):
-    observe nextClaims <- FlightInsurance.State.nextClaims:
-        yield nextClaim nextClaims[account]
-
-endpoint invokable BalanceOf(account Address)->(balance U64):
-    observe balanceOf <- FlightInsurance.State.balanceOf:
-        yield balance balanceOf[account]
-
-endpoint invokable Allowances(owner Address, spender Address)->(allowance U64):
-    observe allowances <- FlightInsurance.State.allowances:
-        yield allowance allowances[owner][spender]
  
-    // @view
-    // func getInsuranceRecord(recordId: U64)-> insuranceRecord:
-    //     let record = Self.insuranceRecord[recordId]
-    //     return record
+
+
+
+//add insurance record logic
+// sabse pehle check karo ki record already exist karta hai ya nahi
+// agar exist karta hai toh throw error
+// 3 pools rahenge, ek ensure pro jiska premium 799, ek family jiska premium 199 aur ek business jiska premium 599
+// agar nahi karta hai toh add karo
+// agar add ho gaya toh return karo
+
+// 200000 = 1000 * 200
+
+// @view
+// func getInsuranceRecord(recordId: U64)-> insuranceRecord:
+//     let record = Self.insuranceRecord[recordId]
+//     return record
