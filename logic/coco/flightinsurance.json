@@ -9,7 +9,7 @@
       "ptr": 0,
       "kind": "constant",
       "data": {
-        "type": "u64",
+        "type": "u256",
         "value": "0x030186a0"
       }
     },
@@ -17,8 +17,8 @@
       "ptr": 1,
       "kind": "constant",
       "data": {
-        "type": "i64",
-        "value": "0x031e"
+        "type": "i256",
+        "value": "0x030e10"
       }
     },
     {
@@ -66,7 +66,7 @@
       "kind": "constant",
       "data": {
         "type": "string",
-        "value": "0x06436c61696d6564"
+        "value": "0x06496e76616c6964205370656e6465722041646472657373"
       }
     },
     {
@@ -74,7 +74,7 @@
       "kind": "constant",
       "data": {
         "type": "string",
-        "value": "0x065265636f7264206e6f7420666f756e64"
+        "value": "0x06496e73756666696369656e7420616c6c6f77616e636573"
       }
     },
     {
@@ -82,76 +82,55 @@
       "kind": "constant",
       "data": {
         "type": "string",
-        "value": "0x06496e76616c6964205370656e6465722041646472657373"
-      }
-    },
-    {
-      "ptr": 10,
-      "kind": "constant",
-      "data": {
-        "type": "string",
-        "value": "0x06496e73756666696369656e7420616c6c6f77616e636573"
-      }
-    },
-    {
-      "ptr": 11,
-      "kind": "constant",
-      "data": {
-        "type": "string",
         "value": "0x064e65787420436c61696d206174207b6e657874436c61696d735b616464726573735d7d"
       }
     },
     {
+      "ptr": 10,
+      "kind": "typedef",
+      "data": "map[address]u256"
+    },
+    {
+      "ptr": 11,
+      "kind": "typedef",
+      "data": "map[address]map[address]u256"
+    },
+    {
       "ptr": 12,
       "kind": "typedef",
-      "data": "map[address]u64"
+      "data": "map[address]i256"
     },
     {
       "ptr": 13,
+      "deps": [
+        15
+      ],
       "kind": "typedef",
-      "data": "map[address]map[address]u64"
+      "data": "map[string]Policy"
     },
     {
       "ptr": 14,
       "kind": "typedef",
-      "data": "map[address]i64"
+      "data": "map[string]u256"
     },
     {
       "ptr": 15,
-      "deps": [
-        16
-      ],
-      "kind": "typedef",
-      "data": "[]InsuranceRecord"
-    },
-    {
-      "ptr": 16,
       "kind": "class",
       "data": {
-        "name": "InsuranceRecord",
+        "name": "Policy",
         "fields": [
           {
             "slot": 0,
-            "label": "recordId",
-            "type": "u64"
+            "label": "holder",
+            "type": "address"
           },
           {
             "slot": 1,
-            "label": "pnrNumber",
-            "type": "u64"
-          },
-          {
-            "slot": 2,
             "label": "premiumAmount",
             "type": "u256"
           },
           {
-            "slot": 3,
-            "label": "insuranceAmount",
-            "type": "u256"
-          },
-          {
-            "slot": 4,
+            "slot": 2,
             "label": "status",
             "type": "string"
           }
@@ -160,41 +139,9 @@
       }
     },
     {
-      "ptr": 17,
-      "kind": "routine",
-      "data": {
-        "name": "pool",
-        "kind": "invokable",
-        "accepts": [
-          {
-            "slot": 0,
-            "label": "FlightInsurance",
-            "type": "string"
-          }
-        ],
-        "returns": [],
-        "executes": {
-          "bin": []
-        }
-      }
-    },
-    {
-      "ptr": 18,
-      "kind": "routine",
-      "data": {
-        "name": "temp",
-        "kind": "local",
-        "accepts": [],
-        "returns": [],
-        "executes": {
-          "bin": []
-        }
-      }
-    },
-    {
-      "ptr": 19,
+      "ptr": 16,
       "deps": [
-        16
+        15
       ],
       "kind": "state",
       "data": {
@@ -213,35 +160,45 @@
           {
             "slot": 2,
             "label": "decimals",
-            "type": "u64"
+            "type": "u256"
           },
           {
             "slot": 3,
             "label": "totalSupply",
-            "type": "u64"
+            "type": "u256"
           },
           {
             "slot": 4,
             "label": "balanceOf",
-            "type": "map[address]u64"
+            "type": "map[address]u256"
           },
           {
             "slot": 5,
             "label": "allowances",
-            "type": "map[address]map[address]u64"
+            "type": "map[address]map[address]u256"
           },
           {
             "slot": 6,
             "label": "nextClaims",
-            "type": "map[address]i64"
+            "type": "map[address]i256"
           },
           {
             "slot": 7,
-            "label": "records",
-            "type": "[]InsuranceRecord"
+            "label": "policies",
+            "type": "map[string]Policy"
           },
           {
             "slot": 8,
+            "label": "flightDelayedBy",
+            "type": "map[string]u256"
+          },
+          {
+            "slot": 9,
+            "label": "activePolicies",
+            "type": "u256"
+          },
+          {
+            "slot": 10,
             "label": "admin",
             "type": "address"
           }
@@ -249,10 +206,10 @@
       }
     },
     {
-      "ptr": 20,
+      "ptr": 17,
       "deps": [
-        23,
-        19
+        24,
+        16
       ],
       "kind": "routine",
       "data": {
@@ -272,25 +229,17 @@
           {
             "slot": 2,
             "label": "decimals",
-            "type": "u64"
+            "type": "u256"
           },
           {
             "slot": 3,
             "label": "totalSupply",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
         "executes": {
           "bin": [
-            115,
-            0,
-            73,
-            0,
-            0,
-            129,
-            0,
-            8,
             4,
             0,
             0,
@@ -329,20 +278,28 @@
             1,
             17,
             1,
-            23,
+            24,
             12,
             0,
             1,
-            0
+            0,
+            115,
+            0,
+            73,
+            0,
+            0,
+            129,
+            0,
+            10
           ]
         }
       }
     },
     {
-      "ptr": 21,
+      "ptr": 18,
       "deps": [
         2,
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -354,7 +311,7 @@
           "bin": [
             128,
             0,
-            8,
+            10,
             115,
             1,
             73,
@@ -390,12 +347,112 @@
       }
     },
     {
+      "ptr": 19,
+      "kind": "routine",
+      "data": {
+        "name": "getPolicyPayout",
+        "kind": "local",
+        "accepts": [],
+        "returns": [],
+        "executes": {
+          "bin": []
+        }
+      }
+    },
+    {
+      "ptr": 20,
+      "kind": "routine",
+      "data": {
+        "name": "UpdateFlightDelayStatus",
+        "kind": "invokable",
+        "accepts": [
+          {
+            "slot": 0,
+            "label": "flightNumber",
+            "type": "string"
+          },
+          {
+            "slot": 1,
+            "label": "departureTime",
+            "type": "u256"
+          },
+          {
+            "slot": 2,
+            "label": "delayedBy",
+            "type": "u256"
+          }
+        ],
+        "returns": [],
+        "executes": {
+          "bin": []
+        }
+      }
+    },
+    {
+      "ptr": 21,
+      "kind": "routine",
+      "data": {
+        "name": "PurchasePolicy",
+        "kind": "invokable",
+        "accepts": [
+          {
+            "slot": 0,
+            "label": "flightNumber",
+            "type": "string"
+          },
+          {
+            "slot": 1,
+            "label": "departureTime",
+            "type": "u256"
+          },
+          {
+            "slot": 2,
+            "label": "pnrNumber",
+            "type": "u256"
+          },
+          {
+            "slot": 3,
+            "label": "premiumAmount",
+            "type": "u256"
+          }
+        ],
+        "returns": [],
+        "executes": {
+          "bin": []
+        }
+      }
+    },
+    {
       "ptr": 22,
+      "kind": "routine",
+      "data": {
+        "name": "ClaimPolicy",
+        "kind": "invokable",
+        "accepts": [
+          {
+            "slot": 0,
+            "label": "pnrNumber",
+            "type": "u256"
+          },
+          {
+            "slot": 1,
+            "label": "recordId",
+            "type": "u256"
+          }
+        ],
+        "returns": [],
+        "executes": {
+          "bin": []
+        }
+      }
+    },
+    {
+      "ptr": 23,
       "deps": [
         3,
         4,
         5,
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -415,7 +472,7 @@
           {
             "slot": 2,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -541,10 +598,10 @@
       }
     },
     {
-      "ptr": 23,
+      "ptr": 24,
       "deps": [
         6,
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -559,7 +616,7 @@
           {
             "slot": 1,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -635,10 +692,10 @@
       }
     },
     {
-      "ptr": 24,
+      "ptr": 25,
       "deps": [
         3,
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -653,7 +710,7 @@
           {
             "slot": 1,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -729,243 +786,10 @@
       }
     },
     {
-      "ptr": 25,
-      "deps": [
-        16,
-        21,
-        19
-      ],
-      "kind": "routine",
-      "data": {
-        "name": "addInsuranceRecord!",
-        "kind": "invokable",
-        "accepts": [
-          {
-            "slot": 0,
-            "label": "pnrNumber",
-            "type": "u64"
-          },
-          {
-            "slot": 1,
-            "label": "premiumAmount",
-            "type": "u256"
-          },
-          {
-            "slot": 2,
-            "label": "insuranceAmount",
-            "type": "u256"
-          },
-          {
-            "slot": 3,
-            "label": "status",
-            "type": "string"
-          }
-        ],
-        "returns": [
-          {
-            "slot": 0,
-            "label": "record",
-            "type": "InsuranceRecord"
-          }
-        ],
-        "executes": {
-          "bin": [
-            10,
-            0,
-            17,
-            1,
-            21,
-            12,
-            0,
-            1,
-            0,
-            128,
-            0,
-            7,
-            17,
-            1,
-            16,
-            40,
-            1,
-            1,
-            80,
-            2,
-            0,
-            82,
-            1,
-            0,
-            2,
-            4,
-            2,
-            0,
-            82,
-            1,
-            1,
-            2,
-            4,
-            2,
-            1,
-            82,
-            1,
-            2,
-            2,
-            4,
-            2,
-            2,
-            82,
-            1,
-            3,
-            2,
-            4,
-            2,
-            3,
-            82,
-            1,
-            4,
-            2,
-            36,
-            2,
-            0,
-            87,
-            2,
-            1,
-            36,
-            0,
-            2,
-            5,
-            1,
-            0,
-            129,
-            0,
-            7
-          ]
-        }
-      }
-    },
-    {
       "ptr": 26,
       "deps": [
-        7,
-        8,
-        21,
-        19,
-        19
-      ],
-      "kind": "routine",
-      "data": {
-        "name": "claimInsurance!",
-        "kind": "invokable",
-        "accepts": [
-          {
-            "slot": 0,
-            "label": "pnrNumber",
-            "type": "u64"
-          },
-          {
-            "slot": 1,
-            "label": "recordId",
-            "type": "u64"
-          }
-        ],
-        "returns": [],
-        "executes": {
-          "bin": [
-            10,
-            0,
-            17,
-            1,
-            21,
-            12,
-            0,
-            1,
-            0,
-            10,
-            0,
-            17,
-            1,
-            19,
-            12,
-            0,
-            1,
-            0,
-            128,
-            0,
-            7,
-            4,
-            1,
-            1,
-            83,
-            2,
-            0,
-            1,
-            81,
-            3,
-            2,
-            1,
-            4,
-            4,
-            0,
-            70,
-            3,
-            3,
-            4,
-            98,
-            3,
-            3,
-            17,
-            4,
-            23,
-            3,
-            4,
-            3,
-            81,
-            3,
-            2,
-            4,
-            17,
-            5,
-            7,
-            16,
-            5,
-            5,
-            36,
-            3,
-            5,
-            82,
-            2,
-            4,
-            3,
-            84,
-            0,
-            1,
-            2,
-            17,
-            4,
-            27,
-            2,
-            4,
-            1,
-            17,
-            1,
-            8,
-            16,
-            1,
-            1,
-            65,
-            1,
-            1,
-            129,
-            0,
-            7
-          ]
-        }
-      }
-    },
-    {
-      "ptr": 27,
-      "deps": [
-        22,
-        19
+        23,
+        16
       ],
       "kind": "routine",
       "data": {
@@ -980,7 +804,7 @@
           {
             "slot": 1,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -1013,7 +837,7 @@
             1,
             17,
             1,
-            22,
+            23,
             12,
             0,
             1,
@@ -1023,10 +847,10 @@
       }
     },
     {
-      "ptr": 28,
+      "ptr": 27,
       "deps": [
-        9,
-        19
+        7,
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1041,7 +865,7 @@
           {
             "slot": 1,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -1068,7 +892,7 @@
             1,
             17,
             1,
-            9,
+            7,
             16,
             1,
             1,
@@ -1106,11 +930,11 @@
       }
     },
     {
-      "ptr": 29,
+      "ptr": 28,
       "deps": [
-        10,
-        22,
-        19
+        8,
+        23,
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1130,7 +954,7 @@
           {
             "slot": 2,
             "label": "value",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "returns": [],
@@ -1173,7 +997,7 @@
             3,
             17,
             3,
-            10,
+            8,
             16,
             3,
             3,
@@ -1232,7 +1056,7 @@
             1,
             17,
             1,
-            22,
+            23,
             12,
             0,
             1,
@@ -1242,11 +1066,11 @@
       }
     },
     {
-      "ptr": 30,
+      "ptr": 29,
       "deps": [
-        11,
-        23,
-        19
+        9,
+        24,
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1286,22 +1110,38 @@
             3,
             2,
             0,
+            10,
+            2,
+            82,
+            2,
+            0,
+            3,
+            10,
+            3,
+            13,
+            3,
+            20,
+            2,
+            81,
+            2,
+            3,
+            0,
             69,
             1,
             1,
-            3,
+            2,
             98,
             1,
             1,
             17,
             2,
-            17,
+            22,
             3,
             2,
             1,
             17,
             1,
-            11,
+            9,
             16,
             1,
             1,
@@ -1326,7 +1166,7 @@
             2,
             17,
             2,
-            23,
+            24,
             12,
             1,
             2,
@@ -1352,16 +1192,32 @@
             3,
             2,
             0,
-            17,
+            10,
             2,
-            1,
-            16,
+            82,
             2,
+            0,
+            3,
+            10,
+            3,
+            13,
+            3,
+            20,
             2,
-            101,
+            81,
             2,
             3,
+            0,
+            17,
+            3,
+            1,
+            16,
+            3,
+            3,
+            101,
             2,
+            2,
+            3,
             84,
             1,
             0,
@@ -1374,52 +1230,9 @@
       }
     },
     {
-      "ptr": 31,
+      "ptr": 30,
       "deps": [
-        15,
-        16,
-        19
-      ],
-      "kind": "routine",
-      "data": {
-        "name": "getInsuranceRecord",
-        "kind": "invokable",
-        "accepts": [
-          {
-            "slot": 0,
-            "label": "recordId",
-            "type": "u64"
-          }
-        ],
-        "returns": [
-          {
-            "slot": 0,
-            "label": "records",
-            "type": "[]InsuranceRecord"
-          }
-        ],
-        "executes": {
-          "bin": [
-            17,
-            0,
-            15,
-            40,
-            0,
-            0,
-            128,
-            0,
-            7,
-            5,
-            0,
-            0
-          ]
-        }
-      }
-    },
-    {
-      "ptr": 32,
-      "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1446,9 +1259,9 @@
       }
     },
     {
-      "ptr": 33,
+      "ptr": 31,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1475,9 +1288,9 @@
       }
     },
     {
-      "ptr": 34,
+      "ptr": 32,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1488,7 +1301,7 @@
           {
             "slot": 0,
             "label": "decimals",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "executes": {
@@ -1504,9 +1317,9 @@
       }
     },
     {
-      "ptr": 35,
+      "ptr": 33,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1517,7 +1330,7 @@
           {
             "slot": 0,
             "label": "totalSupply",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "executes": {
@@ -1533,7 +1346,7 @@
       }
     },
     {
-      "ptr": 36,
+      "ptr": 34,
       "kind": "routine",
       "data": {
         "name": "ClaimAmount",
@@ -1543,7 +1356,7 @@
           {
             "slot": 0,
             "label": "claimAmount",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "executes": {
@@ -1562,7 +1375,7 @@
       }
     },
     {
-      "ptr": 37,
+      "ptr": 35,
       "kind": "routine",
       "data": {
         "name": "ClaimInterval",
@@ -1572,7 +1385,7 @@
           {
             "slot": 0,
             "label": "claimInterval",
-            "type": "i64"
+            "type": "i256"
           }
         ],
         "executes": {
@@ -1591,9 +1404,9 @@
       }
     },
     {
-      "ptr": 38,
+      "ptr": 36,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1610,7 +1423,7 @@
           {
             "slot": 0,
             "label": "nextClaim",
-            "type": "i64"
+            "type": "i256"
           }
         ],
         "executes": {
@@ -1633,9 +1446,9 @@
       }
     },
     {
-      "ptr": 39,
+      "ptr": 37,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1652,7 +1465,7 @@
           {
             "slot": 0,
             "label": "balance",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "executes": {
@@ -1675,9 +1488,9 @@
       }
     },
     {
-      "ptr": 40,
+      "ptr": 38,
       "deps": [
-        19
+        16
       ],
       "kind": "routine",
       "data": {
@@ -1699,7 +1512,7 @@
           {
             "slot": 0,
             "label": "allowance",
-            "type": "u64"
+            "type": "u256"
           }
         ],
         "executes": {
