@@ -92,7 +92,7 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
                 mutate balanceOf <- FlightInsurance.State.balanceOf:
                //here comes the logic for doing payout according to the policy
                     var claimAmount = balanceOf[Address(FlightInsurance)] / U256(len(policies))
-                    transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: premiumAmount )
+                    transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: claimAmount )
                 policies[pnrNumber].status = "claimed"
                 yield claimedPolicy policies[pnrNumber]
             else:
