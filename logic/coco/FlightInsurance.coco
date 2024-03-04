@@ -97,7 +97,7 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
                         var contractBalance U256 = balanceOf[Address(FlightInsurance)]
                         var profitCut U256 = contractBalance / 10
                         var claimAmount = contractBalance - profitCut / U256(len(policies))
-                        if policies[pnrNumber].claimableAmount <= policies[pnrNumber].claimableAmount:
+                        if claimAmount <= policies[pnrNumber].claimableAmount:
                             transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: claimAmount )
                             policies[pnrNumber].status = "claimed"
                         else:
