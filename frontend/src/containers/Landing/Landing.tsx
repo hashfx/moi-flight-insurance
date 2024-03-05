@@ -17,11 +17,11 @@ const Landing = () => {
             Insurance plan starting at just ₹199
           </p>
         </div>
-        <div className="w-full flex flex-row space-x-2">
+        <div className="w-full flex flex-row space-x-5">
           <input
             type="text"
             placeholder="Enter the PNR Number here..."
-            className="p-2 rounded-xl w-full bg-[#2F363E] placeholder-[#8C8C8C6E]"
+            className="p-2 rounded-md w-full bg-[#2F363E] placeholder-[#8C8C8C6E]"
           />
           <button className="bg-[#132C51] px-6 py-1 border border-[#285FB3] rounded-md">
             <Image
