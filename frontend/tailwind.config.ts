@@ -27,6 +27,8 @@ const config: Config = {
         "Background-light": "#2F363E",
         Lighter: "#575B5F",
         Rejection: "#F31F1F",
+        "Rejection-background": "#531212",
+        "Rejection-stroke": "#B32862",
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],
