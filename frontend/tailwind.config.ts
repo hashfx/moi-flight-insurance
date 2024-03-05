@@ -29,6 +29,7 @@ const config: Config = {
         Rejection: "#F31F1F",
         "Rejection-background": "#531212",
         "Rejection-stroke": "#B32862",
+        TextOnTicket: "#8C8E98",
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],
