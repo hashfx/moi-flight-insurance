@@ -5,7 +5,6 @@ export type Tiers = {
 	price: {
 		monthly: string;
 	};
-	description: string;
 	features: string[];
 	mostPopular: boolean;
 };
