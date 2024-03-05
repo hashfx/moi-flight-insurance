@@ -1,5 +1,5 @@
-import Breakdown from "@/components/Dashboard/Breakdown";
 import React from "react";
+import Breakdown from "@/components/Dashboard/Breakdown";
 import DynamicButton from "@/components/Buttons/DynamicButton";
 const breakdown = [
   {
@@ -19,8 +19,7 @@ const breakdown = [
     token: "50",
   },
 ];
-
-const timeline = () => {
+const BreakdownContainer = () => {
   return (
     <div className="flex flex-col">
       {breakdown.map((item, id) => (
@@ -44,4 +43,4 @@ const timeline = () => {
   );
 };
 
-export default timeline;
+export default BreakdownContainer;
