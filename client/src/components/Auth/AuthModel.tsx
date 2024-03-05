@@ -17,65 +17,72 @@ const AuthModel = () => {
   } = useAuth();
   const [error, setError] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const handleMnemonic = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const loggedInWallet = localStorage.getItem("loggedIn");
+    if (loggedInWallet) {
+      const { wallet: storedWallet, mnemonic: storedMnemonic } = JSON.parse(loggedInWallet);
+      const initializeStoredWallet = async () => {
+        try {
+          const newWallet = await Wallet.fromMnemonic(storedMnemonic, account);
+          newWallet.connect(provider);
+          setWallet(newWallet);
+        } catch (error) {
+          console.error("Failed to initialize stored wallet:", error);
+        }
+      };
+      initializeStoredWallet();
+    }
+  }, [setWallet]);
+
+  const handleMnemonicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMnemonic(e.target.value);
   };
-  //@ts-ignore
-  const isLoggedIn = JSON.parse(sessionStorage.getItem("loggedIn"));
-  // useEffect(() => {
-  //   setWallet(isLoggedIn);
-  // });
-  const handleConnect = async (phrase: string) => {
+
+  const handleConnect = async () => {
     try {
-      if (!validateMnemonic(phrase)) {
-        return setError("Incorrect mnemonic");
+      if (!validateMnemonic(mnemonic)) {
+        setError("Incorrect mnemonic");
+        return;
       }
 
-      const wallet = new Wallet(provider);
-      await wallet.fromMnemonic(mnemonic, account);
-      setWallet(wallet);
-      // Assuming loggedIn is a boolean variable indicating the login status
-      sessionStorage.setItem("loggedIn", JSON.stringify(wallet));
+      const newWallet = await Wallet.fromMnemonic(mnemonic, account);
+      newWallet.connect(provider);
+      setWallet(newWallet);
+      localStorage.setItem("loggedIn", JSON.stringify({ wallet: newWallet, mnemonic }));
       setError("");
       setShowConnectModal(false);
       setMnemonic("");
-    } catch (error: object | any) {
-      throw new Error(error);
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+      setError("Error connecting wallet");
     }
-  };
-
-  const handleCancel = () => {
-    setError("");
-    setShowConnectModal(false);
   };
 
   const handleDisconnect = () => {
     setWallet(null);
-    sessionStorage.removeItem("loggedIn");
+    localStorage.removeItem("loggedIn");
     alert("Wallet disconnected");
   };
 
-  console.log(isLoggedIn);
   return (
     <>
       <div className="px-4">
         {wallet ? (
-          <button
-            className="bg-[#0085FF] p-3 rounded-lg text-white font-medium w-30"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            {wallet && truncateStr(wallet.getAddress(), 15)}
-            {isDropdownOpen ? (
-              <div className="absolute top-20 bg-white p-3 rounded-lg shadow-lg ">
-                <button
-                  className="text-red-400"
-                  onClick={() => handleDisconnect()}
-                >
+          <div className="relative">
+            <button
+              className="bg-[#0085FF] p-3 rounded-lg text-white font-medium w-30"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {truncateStr(wallet.getAddress(), 15)}
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute top-10 right-0 bg-white p-3 rounded-lg shadow-lg">
+                <button className="text-red-400" onClick={handleDisconnect}>
                   Disconnect
                 </button>
               </div>
-            ) : null}
-          </button>
+            )}
+          </div>
         ) : (
           <button
             className="bg-[#0085FF] p-2 rounded-lg text-white font-medium"
@@ -89,7 +96,7 @@ const AuthModel = () => {
             <button
               type="button"
               className="font-bold text-2xl text-white"
-              onClick={() => handleCancel()}
+              onClick={() => setShowConnectModal(false)}
             >
               ✕
             </button>
@@ -103,18 +110,16 @@ const AuthModel = () => {
                   name="mnemonic"
                   id="mnemonic"
                   value={mnemonic}
-                  onChange={handleMnemonic}
+                  onChange={handleMnemonicChange}
                   className="p-2 rounded-xl outline-blue-500 active:border-blue-300 border-2 w-full"
                   placeholder="abba jabba dabba abba jabba dabba"
                 />
               </div>
               <button
-                type="submit"
-                onClick={() => handleConnect(mnemonic)}
-                disabled={
-                  !mnemonic || error !== "" || mnemonic.split(" ").length < 12
-                }
-                className=" rounded-md bg-cyan-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:ml-3 sm:mt-0  glow-on-hover"
+                type="button"
+                onClick={handleConnect}
+                disabled={!mnemonic || error !== "" || mnemonic.split(" ").length < 12}
+                className="rounded-md bg-cyan-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:ml-3 sm:mt-0  glow-on-hover"
               >
                 Connect
               </button>
