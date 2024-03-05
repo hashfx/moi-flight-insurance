@@ -29,7 +29,7 @@ export default function RootLayout({
           </div>
           <Image
             src={"/concentricellipses.svg"}
-            className="w-1/2 h-1/2 absolute bottom-0 -left-40"
+            className="w-1/2 h-1/2 absolute bottom-0 -left-40 -z-10"
             alt=""
             width={100}
             height={100}
