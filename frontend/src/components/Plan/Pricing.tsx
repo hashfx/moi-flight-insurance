@@ -62,7 +62,7 @@ const Pricing = () => {
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-4xl text-center">
 					<p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-						Pricing plans for teams of&nbsp;all&nbsp;sizes
+						Pricing Plans For Everyone
 					</p>
 				</div>
 				<p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-300">
