@@ -3,4 +3,5 @@ export type Button = {
   handle?: () => void;
   borderColor?: string;
   backgroundColor?: string;
+  type?: "button" | "submit" | "reset";
 };

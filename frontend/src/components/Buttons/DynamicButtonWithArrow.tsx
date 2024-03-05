@@ -6,11 +6,13 @@ const DynamicButtonWithArrow = ({
   handle,
   borderColor,
   backgroundColor,
+  type,
 }: Button) => {
   return (
     <button
-      className={`w-button py-2 px-6 ${backgroundColor} border ${borderColor} rounded-lg text-xl font-medium text-white flex items-center gap-2`}
+      className={`w-fit py-1 px-3 ${backgroundColor} border ${borderColor} rounded-lg text-base font-medium text-white flex items-center gap-2`}
       onClick={handle}
+      type={type}
     >
       {buttonText}
       <Image src={"/image.png"} alt="arrow" height={32} width={32} />

@@ -6,7 +6,7 @@ const Input = () => {
       <input
         type="text"
         placeholder="Enter the PNR Number here..."
-        className="p-2 rounded-md w-full bg-[#2F363E] placeholder-[#8C8C8C6E]"
+        className="p-2 rounded-md w-full bg-[#2F363E] placeholder-[#8C8C8C6E] outline-none"
       />
       <button className="bg-[#132C51] px-6 py-1 border border-[#285FB3] rounded-md">
         <Image
