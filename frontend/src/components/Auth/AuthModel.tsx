@@ -1,11 +1,10 @@
 "use client";
 import { useAuth } from "@/context/AuthProvider";
-import React, { useEffect, useState } from "react";
-import { Wallet, validateMnemonic, VoyageProvider } from "js-moi-sdk";
+import React, { useState } from "react";
+import { Wallet, validateMnemonic } from "js-moi-sdk";
 import { truncateStr } from "./truncateStr";
+import { account, provider } from "@/constants/auth";
 
-const provider = new VoyageProvider("babylon");
-const account = "m/44'/6174'/7020'/0/0"; // 0th account path derivation
 const AuthModel = () => {
 	const {
 		mnemonic,
@@ -17,23 +16,6 @@ const AuthModel = () => {
 	} = useAuth();
 	const [error, setError] = useState("");
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	useEffect(() => {
-		const loggedInWallet = localStorage.getItem("loggedIn");
-		if (loggedInWallet) {
-			const { wallet: storedWallet, mnemonic: storedMnemonic } =
-				JSON.parse(loggedInWallet);
-			const initializeStoredWallet = async () => {
-				try {
-					const newWallet = await Wallet.fromMnemonic(storedMnemonic, account);
-					newWallet.connect(provider);
-					setWallet(newWallet);
-				} catch (error) {
-					console.error("Failed to initialize stored wallet:", error);
-				}
-			};
-			initializeStoredWallet();
-		}
-	}, [setWallet]);
 
 	const handleMnemonicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setMnemonic(e.target.value);

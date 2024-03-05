@@ -1,5 +1,7 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import { account, provider } from "@/constants/auth";
+import { Wallet } from "js-moi-sdk";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type flightDetails = {
 	claimableAmount: string;
@@ -43,11 +45,28 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const AuthProvider = ({ children }: childProp) => {
 	const [mnemonic, setMnemonic] = useState("");
-	const [wallet, setWallet] = useState();
+	const [wallet, setWallet] = useState<Wallet | undefined>();
 	const [pnrNumber, setPnrNumber] = useState("");
 	const [showConnectModal, setShowConnectModal] = useState(false);
 	const [claimDetails, setClaimDetails] = useState({} as flightDetails);
 	const [responseData, setResponseData] = useState({} as ResponseData);
+
+	useEffect(() => {
+		const loggedInWallet = localStorage.getItem("loggedIn");
+		if (loggedInWallet) {
+			const { mnemonic: storedMnemonic } = JSON.parse(loggedInWallet);
+			const initializeStoredWallet = async () => {
+				try {
+					const newWallet = await Wallet.fromMnemonic(storedMnemonic, account);
+					newWallet.connect(provider);
+					setWallet(newWallet);
+				} catch (error) {
+					console.error("Failed to initialize stored wallet:", error);
+				}
+			};
+			initializeStoredWallet();
+		}
+	}, [setWallet]);
 	return (
 		<AuthContext.Provider
 			value={{
