@@ -17,7 +17,7 @@ const config: Config = {
         button: "166px",
       },
       padding: {
-        button: "14px 40px",
+        button: "8px 32px",
       },
       colors: {
         Background: "#0D1117",
@@ -27,6 +27,9 @@ const config: Config = {
         "Background-light": "#2F363E",
         Lighter: "#575B5F",
         Rejection: "#F31F1F",
+      },
+      fontFamily: {
+        sans: ["Outfit", "sans-serif"],
       },
     },
   },
