@@ -23,7 +23,6 @@ export default function RootLayout({
       <body className="bg-[#0D1117] h-screen flex items-center justify-center">
         <div className="w-[90%]">
           <AuthProvider>
-            {" "}
             <div className="px-10 py-5">
               <Navbar />
               {children}
