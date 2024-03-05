@@ -1,19 +1,18 @@
-"use client";
-import { useState } from "react";
-import { RadioGroup } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { Frequency, Tiers } from "@/types/pricing";
+import { Tiers } from "@/types/pricing";
 
-const frequencies = [
-	{ value: "monthly", label: "Monthly", priceSuffix: "/month" },
-	{ value: "annually", label: "Annually", priceSuffix: "/year" },
-];
+const frequencies = {
+	value: "monthly",
+	label: "Monthly",
+	priceSuffix: "/month",
+};
+
 const tiers = [
 	{
 		name: "Starter",
 		id: "tier-starter",
 		href: "#",
-		price: { monthly: "₹399", annually: "₹3199" },
+		price: { monthly: "₹399" },
 		description: "A Plan that’s perfect for common people and their families.",
 		features: [
 			"Personal Dashboard",
@@ -26,7 +25,7 @@ const tiers = [
 		name: "Premium",
 		id: "tier-premium",
 		href: "#",
-		price: { monthly: "₹699", annually: "₹7999" },
+		price: { monthly: "₹699" },
 		description: "A plan that scales with your rapidly growing business.",
 		features: [
 			"Personal Dashboard",
@@ -39,7 +38,7 @@ const tiers = [
 		name: "Enterprise",
 		id: "tier-enterprise",
 		href: "#",
-		price: { monthly: "₹799", annually: "₹9199" },
+		price: { monthly: "₹799" },
 		description: "Dedicated support and infrastructure for your company.",
 		features: [
 			"Priority Claim Settlement",
@@ -55,45 +54,10 @@ function classNames(...classes: string[]) {
 }
 
 const Pricing = () => {
-	const [frequency, setFrequency] = useState<Frequency>(frequencies[0]);
-
 	return (
 		<div className="pt-10">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
-				<div className="mx-auto max-w-4xl text-center">
-					<p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-						Pricing Plans For Everyone
-					</p>
-				</div>
-				<p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-300">
-					Choose an affordable plan that’s packed with the features you need.
-					Let us help you find the right plan for your business.
-				</p>
-				<div className="mt-16 flex justify-center">
-					<RadioGroup
-						value={frequency}
-						onChange={setFrequency}
-						className="grid grid-cols-2 gap-x-1 rounded-full bg-white/5 p-1 text-center text-xs font-semibold leading-5 text-white"
-					>
-						<RadioGroup.Label className="sr-only">
-							Payment frequency
-						</RadioGroup.Label>
-						{frequencies.map((option) => (
-							<RadioGroup.Option
-								key={option.value}
-								value={option}
-								className={({ checked }: { checked: boolean }) =>
-									classNames(
-										checked ? "bg-Secondary" : "",
-										"cursor-pointer rounded-full px-2.5 py-1"
-									)
-								}
-							>
-								<span>{option.label}</span>
-							</RadioGroup.Option>
-						))}
-					</RadioGroup>
-				</div>
+				<h1 className="text-4xl font-semibold">Plans</h1>
 				<div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 					{tiers.map((tier: Tiers) => (
 						<div
@@ -123,10 +87,10 @@ const Pricing = () => {
 							</p>
 							<p className="mt-6 flex items-baseline gap-x-1">
 								<span className="text-4xl font-bold tracking-tight text-white">
-									{tier.price[frequency.value as keyof typeof tier.price]}
+									{tier.price.monthly}
 								</span>
 								<span className="text-sm font-semibold leading-6 text-gray-300">
-									{frequency.priceSuffix}
+									{frequencies.priceSuffix}
 								</span>
 							</p>
 							<button
