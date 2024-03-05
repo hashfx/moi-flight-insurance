@@ -13,11 +13,10 @@ const tiers = [
 		id: "tier-starter",
 		href: "#",
 		price: { monthly: "₹399" },
-		description: "A Plan that’s perfect for common people and their families.",
 		features: [
 			"Personal Dashboard",
 			"Real time settlement",
-			"Insurance of upto ₹3000 ",
+			"Insurance of upto ₹4000 ",
 		],
 		mostPopular: false,
 	},
@@ -26,11 +25,10 @@ const tiers = [
 		id: "tier-premium",
 		href: "#",
 		price: { monthly: "₹699" },
-		description: "A plan that scales with your rapidly growing business.",
 		features: [
 			"Personal Dashboard",
 			"Priority Customer Service",
-			"Insurance of upto ₹5000",
+			"Insurance of upto ₹7000",
 		],
 		mostPopular: true,
 	},
@@ -39,7 +37,6 @@ const tiers = [
 		id: "tier-enterprise",
 		href: "#",
 		price: { monthly: "₹799" },
-		description: "Dedicated support and infrastructure for your company.",
 		features: [
 			"Priority Claim Settlement",
 			"Priority Customer Service",
@@ -82,9 +79,6 @@ const Pricing = () => {
 									</p>
 								) : null}
 							</div>
-							<p className="mt-4 text-sm leading-6 text-gray-300">
-								{tier.description}
-							</p>
 							<p className="mt-6 flex items-baseline gap-x-1">
 								<span className="text-4xl font-bold tracking-tight text-white">
 									{tier.price.monthly}
