@@ -9,7 +9,7 @@ const TravelBox = () => {
           Travel anywhere across the globe
         </h1>
         <div className="px-1">
-          <p className="font-extralight text-xl">
+          <p className="font-extralight">
             Insurance plan starting at just ₹199
           </p>
         </div>
