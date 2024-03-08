@@ -22,21 +22,60 @@ const ClaimToken = async (wallet: any) => {
 	return ixResponse.wait();
 };
 
-// const CreateCampaign = async (wallet: any, teaPrice, creator, creatordetails) => {
-//   const logicDriver = await getLogicDriver(logicId, wallet);
-//   const ixResponse = await logicDriver.routines.CreateCampaign(
-//     teaPrice,
-//     creator,
-//     creatordetails
-//   );
-//   return ixResponse.result();
-// };
+const UpdateFlightDelayStatus = async (wallet: any, flightNumber: string, departureTime: string, delayedBy: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.UpdateFlightDelayStatus(flightNumber, departureTime, delayedBy);
+	return ixResponse.result();
+};
 
-// const BuyTea = async (wallet, id, amount, name) => {
-//   const logicDriver = await getLogicDriver(logicId, wallet);
-//   const ixResponse = await logicDriver.routines.BuyTea(id, amount, name);
-//   return ixResponse.wait();
-// };
+const PurchasePolicy = async (wallet: any, pnrNumber: string, premiumAmount: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.PurchasePolicy(pnrNumber, premiumAmount);
+	return ixResponse.result();
+}
+
+const ClaimPolicy = async (wallet: any, pnrNumber: string, premiumAmount: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.ClaimPolicy(pnrNumber, premiumAmount);
+	return ixResponse.result();
+}
+
+const PolicyStatus = async (wallet: any, pnrNumber: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.PolicyStatus(pnrNumber);
+	return ixResponse.result();
+}
+
+const Transfer = async (wallet: any, to: string, value: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.Transfer(to, value);
+	return ixResponse.result();
+}
+
+const Approve = async (wallet: any, spender: string, value: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.Approve(spender, value);
+	return ixResponse.result();
+}
+
+const TotalSupply = async (wallet: any) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.TotalSupply();
+	return ixResponse.result();
+}
+
+const ClaimInterval = async (wallet: any) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.ClaimInterval();
+	return ixResponse.result();
+}
+
+const NextClaim = async (wallet: any, account: string) => {
+	const logicDriver = await getLogicDriver(logicId, wallet);
+	const ixResponse = await logicDriver.routines.NextClaim(account);
+	return ixResponse.result();
+}
+
 
 ////////////////////////
 // Observe/Read Calls
@@ -66,10 +105,6 @@ const GetTokenSymbol = async () => {
 	const logicDriver = await getLogicDriver(logicId, baseWallet);
 	return logicDriver.routines.Symbol();
 };
-const GetCampaigns = async () => {
-	const logicDriver = await getLogicDriver(logicId, baseWallet);
-	return logicDriver.routines.SeeCampaign();
-};
 
 const logic = {
 	GetTokenName,
@@ -79,9 +114,15 @@ const logic = {
 	GetTokenDecimals,
 	GetTokenSymbol,
 	ClaimToken,
-	// CreateCampaign,
-	// BuyTea,
-	GetCampaigns,
+	UpdateFlightDelayStatus,
+	PurchasePolicy,
+	ClaimPolicy,
+	PolicyStatus,
+	Transfer,
+	Approve,
+	TotalSupply,
+	ClaimInterval,
+	NextClaim
 };
 
 export default logic;
