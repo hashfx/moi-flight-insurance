@@ -1,4 +1,5 @@
 "use client";
+import { data } from "@/components/Dashboard/data";
 import { account, provider } from "@/constants/auth";
 import { Wallet } from "js-moi-sdk";
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -35,6 +36,8 @@ interface AuthContextType {
 	setResponseData: (responseData: ResponseData) => void;
 	showConnectModal: boolean;
 	setShowConnectModal: (showConnectModal: boolean) => void;
+	selectedData: any;
+	setSelectedData: any;
 }
 
 interface childProp {
@@ -50,6 +53,7 @@ const AuthProvider = ({ children }: childProp) => {
 	const [showConnectModal, setShowConnectModal] = useState(false);
 	const [claimDetails, setClaimDetails] = useState({} as flightDetails);
 	const [responseData, setResponseData] = useState({} as ResponseData);
+	const [selectedData, setSelectedData] = useState(data[1]);
 
 	useEffect(() => {
 		const loggedInWallet = localStorage.getItem("loggedIn");
@@ -82,6 +86,8 @@ const AuthProvider = ({ children }: childProp) => {
 				setResponseData,
 				showConnectModal,
 				setShowConnectModal,
+				selectedData,
+				setSelectedData,
 			}}
 		>
 			{children}

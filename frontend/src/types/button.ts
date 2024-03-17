@@ -1,6 +1,6 @@
 export type Button = {
   buttonText: string;
-  handle?: () => void;
+  handle?: any;
   borderColor?: string;
   backgroundColor?: string;
   type?: "button" | "submit" | "reset";

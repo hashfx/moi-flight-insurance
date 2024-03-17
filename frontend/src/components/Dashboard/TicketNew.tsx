@@ -86,7 +86,7 @@ const TicketNew = ({
           <CityField Heading={arrivalAirportCode} FullName={arrivalName} />
           <div className="flex items-center justify-center bg-[#20262E] h-9 px-6 py-2 rounded-[32px]">
             <Image
-              src={"./airplane.svg"}
+              src={"/airplane.svg"}
               width={18}
               height={18}
               alt="airplane"

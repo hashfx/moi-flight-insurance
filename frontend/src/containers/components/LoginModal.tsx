@@ -1,10 +1,14 @@
 "use client";
 import DynamicButtonWithArrow from "@/components/Buttons/DynamicButtonWithArrow";
 import Modal from "@/components/Modal/Modal";
+import { account, provider } from "@/constants/auth";
+import { useAuth } from "@/context/AuthProvider";
+import { Wallet, validateMnemonic } from "js-moi-sdk";
 import React, { useState, useRef } from "react";
 
 const LoginModal = ({ onClose }: any) => {
-  const [mnemonic, setMnemonic] = useState([]);
+  const [mnemonics, setMnemonics] = useState([]);
+  const {setWallet, mnemonic,setMnemonic} = useAuth();
   const inputRef = useRef(null);
 
   const handlePaste = (event: any) => {
@@ -18,19 +22,38 @@ const LoginModal = ({ onClose }: any) => {
       return;
     }
 
-    setMnemonic(words);
+    setMnemonics(words);
   };
 
   const handleChange = (event: any, index: number) => {
-    const updatedMnemonic = [...mnemonic];
+    const updatedMnemonic = [...mnemonics] as any;
     updatedMnemonic[index] = event.target.value;
-    setMnemonic(updatedMnemonic);
+    setMnemonics(updatedMnemonic);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // Here you can access the complete mnemonic using `mnemonic.join(' ')`
-    console.log("Submitted Mnemonic:", mnemonic.join(" "));
+    const phrase = mnemonics.join(" ");
+    setMnemonic(phrase);
+    try {
+			if (!validateMnemonic(phrase)) {
+				console.error("Incorrect mnemonic");
+				return;
+			}
+
+			const newWallet = await Wallet.fromMnemonic(phrase, account);
+			newWallet.connect(provider);
+			setWallet(newWallet);
+			localStorage.setItem(
+				"loggedIn",
+				JSON.stringify({ wallet: newWallet, mnemonic: phrase })
+			);
+			setMnemonic("");
+      setMnemonics([]);
+      onClose();
+		} catch (error) {
+			console.error("Error connecting wallet:", error);
+		}
   };
   return (
     <div className="relative w-full h-full bg-black bg-opacity-50">
@@ -65,7 +88,7 @@ const LoginModal = ({ onClose }: any) => {
                     <input
                       type="text"
                       id={`word-${index + 1}`}
-                      value={mnemonic[index] || ""} // Set initial value to empty string
+                      value={mnemonics[index] || ""} // Set initial value to empty string
                       onChange={(e) => handleChange(e, index)}
                       required
                       className="bg-[#2F363E] rounded-md outline-none p-2 w-full h-10 text-gray-400"
