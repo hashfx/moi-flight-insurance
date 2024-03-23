@@ -21,19 +21,26 @@ export default function Home() {
     TotalSupply,
     ClaimInterval,
     NextClaim} = logic;
-    const LogicTest = async () => {
-      const [{name}, {balance}, {nextClaim}, {claimAmount}, {decimals}, {symbol}, {claimInterval}] = await Promise.all([
-        GetTokenName(),
-        GetTokenBalanceOf(wallet?.getAddress()),
-        GetNextClaim(wallet?.getAddress()),
-        GetTokenClaimAmount(),
-        GetTokenDecimals(),
-        GetTokenSymbol(),
-        ClaimInterval(wallet)
-      ]);
-      console.log(name, balance, nextClaim, claimAmount, decimals, symbol, claimInterval);
+    // const LogicTest = async () => {
+  //     const [{name}, {balance}, {nextClaim}, {claimAmount}, {decimals}, {symbol}, {claimInterval}] = await Promise.all([
+  //       GetTokenName(),
+  //       GetTokenBalanceOf(wallet?.getAddress()),
+  //       GetNextClaim(wallet?.getAddress()),
+  //       GetTokenClaimAmount(),
+  //       GetTokenDecimals(),
+  //       GetTokenSymbol(),
+  //       ClaimInterval()
+  //     ]);
+  //     console.log(balance);
+  // }
+  // LogicTest();
+
+  const testBalance = async () => {
+    const balance = await GetTokenBalanceOf(wallet?.getAddress());
+    console.log(balance);
   }
-  LogicTest();
+  // testBalance();
+
   return (
     <main className="">
       <Landing />
