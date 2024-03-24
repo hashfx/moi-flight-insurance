@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/types/button";
 import Image from "next/image";
@@ -11,8 +11,15 @@ const DynamicButtonWithArrow = ({
   backgroundColor,
   type,
 }: Button) => {
-  const {setOpenClaimModal, wallet, setRefillTime, setBalance, balance, refillTime} = useAuth();
-  const {ClaimToken, GetTokenClaimAmount, GetNextClaim} = logic;
+  const {
+    setOpenClaimModal,
+    wallet,
+    setRefillTime,
+    setBalance,
+    balance,
+    refillTime,
+  } = useAuth();
+  const { ClaimToken, GetTokenClaimAmount, GetNextClaim } = logic;
   const [claimAmount, setClaimAmount] = useState();
   const [nextClaim, setNextClaim] = useState();
   const [isClaiming, setIsClaiming] = useState(false);
@@ -23,7 +30,7 @@ const DynamicButtonWithArrow = ({
     ]);
     setClaimAmount(claimAmount);
     setNextClaim(nextClaim);
-  }
+  };
 
   useEffect(() => {
     handleClaimToken();
@@ -56,19 +63,19 @@ const DynamicButtonWithArrow = ({
   };
   return (
     <>
-    <button
-      className={`w-fit py-1 px-3 ${backgroundColor} border ${borderColor} rounded-lg text-base font-medium text-white flex items-center gap-2 disabled:cursor-not-allowed`}
-      onClick={handleOnClaim}
-      disabled={refillTime !== "00:00:00"}
-      type={type}
-    >
-      {buttonText}
-      <Image src={"/image.png"} alt="arrow" height={32} width={32} />
-    </button>
-    {isClaiming && (
-      <p className="">
-        Please wait while the current request is being processed
-      </p>
+      <button
+        className={`w-fit py-1 px-3 ${backgroundColor} border ${borderColor} rounded-lg text-base font-medium text-white flex items-center gap-2 disabled:cursor-not-allowed`}
+        onClick={handleOnClaim}
+        disabled={refillTime !== "00:00:00"}
+        type={type}
+      >
+        {buttonText}
+        <Image src={"/image.png"} alt="arrow" height={32} width={32} />
+      </button>
+      {isClaiming && (
+        <p className="">
+          Please wait while the current request is being processed
+        </p>
       )}
     </>
   );

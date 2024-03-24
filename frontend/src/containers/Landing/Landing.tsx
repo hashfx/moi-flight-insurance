@@ -2,10 +2,14 @@ import React from "react";
 import Footer from "../Footer/Footer";
 import TravelBox from "../components/TravelBox";
 import Image from "next/image";
+import GlobeContainer from "@/components/Globe/GlobeContainer";
 
 const Landing = () => {
   return (
-    <div className="w-full h-full mt-16 flex flex-col gap-20 z-50">
+    <div className="w-full h-full mt-16 flex flex-col gap-20 z-50 relative">
+      <div className="fixed w-full -right-[36rem] scale-110 rotate-12 -bottom-8">
+        <GlobeContainer />
+      </div>
       <h1 className=" font-medium text-5xl flex flex-col">
         <span>Get Rid of delaying flights,</span>{" "}
         <span>get your precious time back monetarily</span>

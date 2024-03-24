@@ -10,7 +10,7 @@ const Navbar = () => {
   const handleShowConnectModal = () => {
     setShowConnectModal(!showConnectModal);
   };
-  const {wallet} = useAuth();
+  const { wallet } = useAuth();
   return (
     <>
       {showConnectModal && (
@@ -22,7 +22,9 @@ const Navbar = () => {
         <div className="flex flex-row justify-between items-center py-8">
           <h1 className="font-bold text-[40px] font-[Poppins]">Finsure</h1>
           <DynamicButton
-            buttonText={wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"}
+            buttonText={
+              wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"
+            }
             handle={handleShowConnectModal}
             borderColor="border-Secondary"
             backgroundColor="bg-Primary"
