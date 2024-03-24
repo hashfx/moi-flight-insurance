@@ -4,8 +4,8 @@ import DynamicButton from "@/components/Buttons/DynamicButton";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";
 const FlighInsurance = () => {
-  const { selectedData } = useAuth();
-  return (
+  const { selectedData, wallet } = useAuth();
+  return wallet ? (
     <div className="flex items-center justify-center w-full mb-12">
       <div>
         {selectedData.status === "Delayed" ? (
@@ -29,6 +29,8 @@ const FlighInsurance = () => {
         )}
       </div>
     </div>
+  ) : (
+    <div>Connect Wallet First</div>
   );
 };
 

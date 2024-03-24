@@ -1,7 +1,9 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Field from "./components/Field";
 import CityField from "./components/CityField";
+import { useAuth } from "@/context/AuthProvider";
 interface TicketProps {
   pnr: string;
   name: string;
@@ -34,7 +36,8 @@ const TicketNew = ({
   flightNumber,
   seat,
 }: TicketProps) => {
-  return (
+  const { wallet } = useAuth();
+  return wallet ? (
     /*
     div:before{   
     top:-50px; left:225px;
@@ -130,7 +133,7 @@ const TicketNew = ({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default TicketNew;
