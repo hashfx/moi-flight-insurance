@@ -14,14 +14,15 @@ const Navbar = () => {
   const handleShowConnectModal = () => {
     wallet ? setClicked(!clicked) : setShowConnectModal(!showConnectModal);
   };
-  const handleDisconnect = () =>{
+  const handleDisconnect = () => {
     if (wallet) {
       localStorage.removeItem("loggedIn");
       setWallet(null);
       setShowConnectModal(false);
+      setClicked(false);
       return;
     }
-  }
+  };
   return (
     <>
       {showConnectModal && !wallet && (
@@ -29,21 +30,21 @@ const Navbar = () => {
           <LoginModal onClose={handleShowConnectModal} />
         </div>
       )}
-      <div className="fixed top-0 w-[85%] left-auto" onMouseOut={() => setClicked(false)}>
+      <div className="fixed top-0 w-[85%] left-auto">
         <div className="flex flex-row justify-between items-center py-8">
           <Link href={"/"}>
             <h1 className="font-bold text-[40px] font-[Poppins]">Finsure</h1>
           </Link>
-            {!clicked && (
-              <DynamicButton
-                buttonText={
-                  wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"
-                }
-                handle={handleShowConnectModal}
-                borderColor="border-Secondary"
-                backgroundColor="bg-Primary"
-              />
-            )}
+          {!clicked && (
+            <DynamicButton
+              buttonText={
+                wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"
+              }
+              handle={handleShowConnectModal}
+              borderColor="border-Secondary"
+              backgroundColor="bg-Primary"
+            />
+          )}
           {wallet && clicked && (
             <ConnectButton
               buttonText="Disconnect"
