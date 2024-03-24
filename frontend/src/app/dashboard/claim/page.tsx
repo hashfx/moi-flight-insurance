@@ -16,7 +16,7 @@ const breakdown = [
   },
 ];
 
-const timeline = () => {
+const Timeline = () => {
   return (
     <div className="w-full flex justify-between flex-col">
     <div className="">
@@ -42,4 +42,4 @@ const timeline = () => {
   );
 };
 
-export default timeline;
+export default Timeline;

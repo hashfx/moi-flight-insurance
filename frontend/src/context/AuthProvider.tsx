@@ -100,6 +100,7 @@ const AuthProvider = ({ children }: childProp) => {
 	}, [setWallet]);
 
 	useEffect(() => {
+		if (!wallet) return;
     const getTokenDetails = async () => {
       const [{ name }, { symbol }, { decimals }] = await Promise.all([
         logic.GetTokenName(),

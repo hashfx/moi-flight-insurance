@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { data } from "@/components/Dashboard/data.js";
 import DynamicButton from "@/components/Buttons/DynamicButton";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthProvider";

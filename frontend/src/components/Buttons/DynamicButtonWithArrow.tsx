@@ -37,18 +37,18 @@ const DynamicButtonWithArrow = ({
   }, [wallet]);
 
   useEffect(() => {
-    const id = setInterval(() => {
+    const time = setInterval(() => {
       setRefillTime(calculateRemainingTime(nextClaim));
     }, 1000);
 
-    return () => clearInterval(id);
-  }, [nextClaim]);
+    return () => clearInterval(time);
+  }, [nextClaim, setRefillTime]);
 
   const handleOnClaim = async () => {
     try {
       setIsClaiming(true);
       await ClaimToken(wallet);
-      const { nextClaim } = await GetNextClaim(wallet.getAddress());
+      const { nextClaim } = await GetNextClaim(wallet?.getAddress());
       setNextClaim(nextClaim);
       setBalance(balance + claimAmount);
       console.log(`Claimed ${claimAmount} successfully`);
@@ -64,12 +64,13 @@ const DynamicButtonWithArrow = ({
       <button
         className={`w-fit py-1 px-3 ${backgroundColor} border ${borderColor} rounded-lg text-base font-medium text-white flex items-center gap-2 disabled:cursor-not-allowed`}
         onClick={handleOnClaim}
-        disabled={refillTime !== "00:00:00"}
+        disabled={refillTime !== "00:00:00" || isClaiming ? true : false}
         type={type}
       >
         {buttonText}
         <Image src={"/image.png"} alt="arrow" height={32} width={32} />
       </button>
+      <p className="text-gray-500">Remaining Time: {refillTime}</p>
       {isClaiming && (
         <p className="text-gray-500">
           Please wait while the current request is being processed

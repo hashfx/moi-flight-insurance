@@ -2,9 +2,9 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { PlanDetail } from "@/types/pricing";
 import { useAuth } from "@/context/AuthProvider";
-import logic from "@/interface/logic";
 import TokenModal from "@/containers/components/TokenModal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const frequencies = {
   value: "monthly",
@@ -71,6 +71,13 @@ const Pricing = () => {
     setOpenClaimModal(true);
     setSelectedPlans(plan);
   };
+
+  const router = useRouter();
+  useEffect(() => {
+    if (!wallet) {
+      router.push("/");
+    }
+  }, [router, wallet])
   return (
     <>
       <div className="pt-10">

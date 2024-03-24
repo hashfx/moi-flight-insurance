@@ -3,7 +3,6 @@ export const calculateRemainingTime = (nextClaim: any) => {
   const now = new Date();
 
   let diff = nextClaim * 1000 - now.getTime();
-  console.log(nextClaim);
   if (diff < 0) diff = 0;
 
   // Convert the difference to hours, minutes, and seconds
