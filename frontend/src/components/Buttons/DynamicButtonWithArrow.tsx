@@ -47,10 +47,8 @@ const DynamicButtonWithArrow = ({
   const handleOnClaim = async () => {
     try {
       setIsClaiming(true);
-
       await ClaimToken(wallet);
       const { nextClaim } = await GetNextClaim(wallet.getAddress());
-
       setNextClaim(nextClaim);
       setBalance(balance + claimAmount);
       console.log(`Claimed ${claimAmount} successfully`);

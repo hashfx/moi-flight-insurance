@@ -1,5 +1,5 @@
 "use client";
-import DynamicButtonWithArrow from "@/components/Buttons/DynamicButtonWithArrow";
+import ConnectButton from "@/components/Buttons/ConnectButton";
 import Modal from "@/components/Modal/Modal";
 import { account, provider } from "@/constants/auth";
 import { useAuth } from "@/context/AuthProvider";
@@ -97,13 +97,13 @@ const LoginModal = ({ onClose }: any) => {
                 ))}
               </div>
               <div className="w-full justify-end items-center flex">
-                <DynamicButtonWithArrow
-                  // handle={}
-                  buttonText="Connect"
-                  backgroundColor="bg-Primary"
-                  borderColor="border-Secondary"
-                  type="submit"
-                />
+                  <ConnectButton
+                    // handle={}
+                    buttonText="Connect"
+                    backgroundColor="bg-Primary"
+                    borderColor="border-Secondary"
+                    type="submit"
+                  />
               </div>
             </form>
           </div>
