@@ -7,9 +7,12 @@ import TokenModal from "@/containers/components/TokenModal";
 import { useEffect, useState } from "react";
 
 const frequencies = {
-	value: "monthly",
-	label: "Monthly",
-	priceSuffix: "/month",
+  value: "monthly",
+  label: "Monthly",
+  priceSuffix: "/month",
+  value: "monthly",
+  label: "Monthly",
+  priceSuffix: "/month",
 };
 
 const tiers = [
@@ -55,7 +58,8 @@ const tiers = [
 ];
 
 function classNames(...classes: string[]) {
-	return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(" ");
 }
 
 const Pricing = () => {

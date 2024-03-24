@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "three-globe": "^2.31.0",
+    "three-glow-mesh": "^0.1.2"
+  }
+}
