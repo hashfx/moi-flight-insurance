@@ -6,8 +6,8 @@ import GlobeContainer from "@/components/Globe/GlobeContainer";
 
 const Landing = () => {
   return (
-    <div className="w-full h-full mt-16 flex flex-col gap-20 z-50 relative">
-      <div className="fixed w-full -right-[36rem] scale-110 rotate-12 -bottom-8">
+    <div className="w-full h-full mt-16 flex flex-col gap-20 relative">
+      <div className="fixed w-full -right-[36rem] scale-110 rotate-12 -bottom-8 z-0">
         <GlobeContainer />
       </div>
       <h1 className=" font-medium text-5xl flex flex-col">

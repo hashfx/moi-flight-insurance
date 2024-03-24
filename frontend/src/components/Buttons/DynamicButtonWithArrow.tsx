@@ -62,7 +62,7 @@ const DynamicButtonWithArrow = ({
     }
   };
   return (
-    <>
+    <div className="flex flex-col items-center w-full gap-3">
       <button
         className={`w-fit py-1 px-3 ${backgroundColor} border ${borderColor} rounded-lg text-base font-medium text-white flex items-center gap-2 disabled:cursor-not-allowed`}
         onClick={handleOnClaim}
@@ -73,11 +73,11 @@ const DynamicButtonWithArrow = ({
         <Image src={"/image.png"} alt="arrow" height={32} width={32} />
       </button>
       {isClaiming && (
-        <p className="">
+        <p className="text-gray-500">
           Please wait while the current request is being processed
         </p>
       )}
-    </>
+    </div>
   );
 };
 

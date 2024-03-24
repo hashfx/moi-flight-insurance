@@ -4,6 +4,7 @@ import DynamicButton from "../Buttons/DynamicButton";
 import LoginModal from "@/containers/components/LoginModal";
 import { useAuth } from "@/context/AuthProvider";
 import { truncateStr } from "../Auth/truncateStr";
+import Link from "next/link";
 
 const Navbar = () => {
   const [showConnectModal, setShowConnectModal] = useState(false);
@@ -20,7 +21,9 @@ const Navbar = () => {
       )}
       <div className="fixed top-0 w-[85%] left-auto">
         <div className="flex flex-row justify-between items-center py-8">
-          <h1 className="font-bold text-[40px] font-[Poppins]">Finsure</h1>
+          <Link href={"/"}>
+            <h1 className="font-bold text-[40px] font-[Poppins]">Finsure</h1>
+          </Link>
           <DynamicButton
             buttonText={
               wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"

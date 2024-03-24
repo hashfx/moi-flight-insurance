@@ -8,7 +8,7 @@ import React, { useState, useRef } from "react";
 
 const LoginModal = ({ onClose }: any) => {
   const [mnemonics, setMnemonics] = useState([]);
-  const {setWallet, mnemonic,setMnemonic} = useAuth();
+  const { setWallet, mnemonic, setMnemonic } = useAuth();
   const inputRef = useRef(null);
 
   const handlePaste = (event: any) => {
@@ -36,24 +36,24 @@ const LoginModal = ({ onClose }: any) => {
     const phrase = mnemonics.join(" ");
     setMnemonic(phrase);
     try {
-			if (!validateMnemonic(phrase)) {
-				console.error("Incorrect mnemonic");
-				return;
-			}
+      if (!validateMnemonic(phrase)) {
+        console.error("Incorrect mnemonic");
+        return;
+      }
 
-			const newWallet = await Wallet.fromMnemonic(phrase, account);
-			newWallet.connect(provider);
-			setWallet(newWallet);
-			localStorage.setItem(
-				"loggedIn",
-				JSON.stringify({ wallet: newWallet, mnemonic: phrase })
-			);
-			setMnemonic("");
+      const newWallet = await Wallet.fromMnemonic(phrase, account);
+      newWallet.connect(provider);
+      setWallet(newWallet);
+      localStorage.setItem(
+        "loggedIn",
+        JSON.stringify({ wallet: newWallet, mnemonic: phrase })
+      );
+      setMnemonic("");
       setMnemonics([]);
       onClose();
-		} catch (error) {
-			console.error("Error connecting wallet:", error);
-		}
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+    }
   };
   return (
     <div className="relative w-full h-full bg-black bg-opacity-50">

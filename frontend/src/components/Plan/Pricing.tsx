@@ -83,7 +83,7 @@ const Pricing = () => {
                 className={classNames(
                   tier.mostPopular
                     ? "bg-white/5 ring-2 ring-Secondary"
-                    : "ring-1 ring-white/10",
+                    : "bg-Background ring-1 ring-white/10",
                   "rounded-3xl p-8 xl:p-10"
                 )}
               >

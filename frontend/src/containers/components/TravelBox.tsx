@@ -3,7 +3,7 @@ import Image from "next/image";
 import Input from "@/components/Input/Input";
 const TravelBox = () => {
   return (
-    <div className="w-1/2 p-10 bg-[#20262E] h-full flex flex-col gap-8 rounded-md">
+    <div className="w-1/2 p-10 bg-[#20262E] h-full flex flex-col gap-8 rounded-md z-20">
       <div className="flex flex-col gap-2">
         <h1 className="text-[32px] font-light">
           Travel anywhere across the globe
