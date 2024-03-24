@@ -1,10 +1,12 @@
 "use client";
 import { data } from "@/components/Dashboard/data";
 import { account, provider } from "@/constants/auth";
+import logic from "@/interface/logic";
+import { PlanDetail } from "@/types/pricing";
 import { Wallet } from "js-moi-sdk";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-export type flightDetails = {
+export type ClaimDetail = {
 	claimableAmount: string;
 	premiumPaid: string;
 };
@@ -23,6 +25,12 @@ interface ResponseData {
 	updatedOn: string;
 }
 
+export type TokenDetail = {
+	name: string;
+	symbol: string;
+	decimals: any;
+}
+
 interface AuthContextType {
 	mnemonic: string;
 	setMnemonic: (mnemonic: string) => void;
@@ -30,14 +38,24 @@ interface AuthContextType {
 	setWallet: any;
 	pnrNumber: string;
 	setPnrNumber: (pnrNumber: string) => void;
-	claimDetails: flightDetails;
-	setClaimDetails: (claimDetails: flightDetails) => void;
+	claimDetails: ClaimDetail;
+	setClaimDetails: (claimDetails: ClaimDetail) => void;
 	responseData: ResponseData;
 	setResponseData: (responseData: ResponseData) => void;
 	showConnectModal: boolean;
 	setShowConnectModal: (showConnectModal: boolean) => void;
 	selectedData: any;
 	setSelectedData: any;
+	selectedPlans: PlanDetail;
+	setSelectedPlans: (selectedPlans: PlanDetail) => void
+	openClaimModal: boolean;
+	setOpenClaimModal: (openClaimModal: boolean) => void;
+	balance: any;
+	setBalance: (balance: any) => void;
+	tokenDetails: TokenDetail;
+	setTokenDetails: (tokenDetail: TokenDetail) => void;
+	refillTime: string;
+	setRefillTime: (refillTime: string) => void;
 }
 
 interface childProp {
@@ -51,9 +69,18 @@ const AuthProvider = ({ children }: childProp) => {
 	const [wallet, setWallet] = useState<Wallet | undefined>();
 	const [pnrNumber, setPnrNumber] = useState("");
 	const [showConnectModal, setShowConnectModal] = useState(false);
-	const [claimDetails, setClaimDetails] = useState({} as flightDetails);
+	const [claimDetails, setClaimDetails] = useState({} as ClaimDetail);
 	const [responseData, setResponseData] = useState({} as ResponseData);
+	const [selectedPlans, setSelectedPlans] = useState({} as PlanDetail);
 	const [selectedData, setSelectedData] = useState(data[1]);
+	const [openClaimModal, setOpenClaimModal] = useState(false);
+	const [balance, setBalance] = useState([]);
+	const [tokenDetails, setTokenDetails] = useState<TokenDetail>({
+    name: "",
+    symbol: "", 
+    decimals: null, 
+  });
+	const [refillTime, setRefillTime] = useState("00:00:00");
 
 	useEffect(() => {
 		const loggedInWallet = localStorage.getItem("loggedIn");
@@ -71,6 +98,33 @@ const AuthProvider = ({ children }: childProp) => {
 			initializeStoredWallet();
 		}
 	}, [setWallet]);
+
+	useEffect(() => {
+    const getTokenDetails = async () => {
+      const [{ name }, { symbol }, { decimals }] = await Promise.all([
+        logic.GetTokenName(),
+        logic.GetTokenSymbol(),
+        logic.GetTokenDecimals(),
+      ]);
+
+      setTokenDetails({
+        name,
+        symbol,
+        decimals,
+      });
+    };
+    getTokenDetails();
+  }, []);
+
+  useEffect(() => {
+    const getTokenBalance = async () => {
+      if (!wallet) return;
+
+      const { balance } = await logic.GetTokenBalanceOf(wallet.getAddress());
+      setBalance(balance);
+    };
+    getTokenBalance();
+  }, [wallet]);
 	return (
 		<AuthContext.Provider
 			value={{
@@ -88,6 +142,16 @@ const AuthProvider = ({ children }: childProp) => {
 				setShowConnectModal,
 				selectedData,
 				setSelectedData,
+				selectedPlans,
+				setSelectedPlans,
+				openClaimModal,
+				setOpenClaimModal,
+				balance,
+				setBalance,
+				tokenDetails,
+				setTokenDetails,
+				refillTime,
+				setRefillTime
 			}}
 		>
 			{children}

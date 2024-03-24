@@ -1,5 +1,10 @@
+'use client';
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { Tiers } from "@/types/pricing";
+import { PlanDetail } from "@/types/pricing";
+import { useAuth } from "@/context/AuthProvider";
+import logic from "@/interface/logic";
+import TokenModal from "@/containers/components/TokenModal";
+import { useEffect, useState } from "react";
 
 const frequencies = {
 	value: "monthly",
@@ -19,6 +24,7 @@ const tiers = [
 			"Insurance of upto ₹4000 ",
 		],
 		mostPopular: false,
+		priceInNumber: 399,
 	},
 	{
 		name: "Premium",
@@ -31,6 +37,7 @@ const tiers = [
 			"Insurance of upto ₹7000",
 		],
 		mostPopular: true,
+		priceInNumber: 699,
 	},
 	{
 		name: "Enterprise",
@@ -43,6 +50,7 @@ const tiers = [
 			"Insurance for upto ₹8000",
 		],
 		mostPopular: false,
+		priceInNumber: 799,
 	},
 ];
 
@@ -51,12 +59,18 @@ function classNames(...classes: string[]) {
 }
 
 const Pricing = () => {
+	const { wallet, setOpenClaimModal, openClaimModal, balance, setSelectedPlans} = useAuth();
+	const handlePlans = async (plan: PlanDetail) => {
+		setOpenClaimModal(true);
+		setSelectedPlans(plan);
+	}
 	return (
+		<>
 		<div className="pt-10">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<h1 className="text-4xl font-semibold">Plans</h1>
 				<div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-					{tiers.map((tier: Tiers) => (
+					{tiers.map((tier: PlanDetail) => (
 						<div
 							key={tier.id}
 							className={classNames(
@@ -89,6 +103,7 @@ const Pricing = () => {
 							</p>
 							<button
 								aria-describedby={tier.id}
+								onClick={() => handlePlans(tier)}
 								className={classNames(
 									tier.mostPopular
 										? "bg-Primary text-white shadow-sm hover:bg-Secondary focus-visible:outline-Secondary"
@@ -117,6 +132,12 @@ const Pricing = () => {
 				</div>
 			</div>
 		</div>
+			{openClaimModal && (
+				<div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+					<TokenModal/>
+				</div>
+			)}
+			</>
 	);
 };
 
