@@ -1,10 +1,14 @@
+import DetailForm from "@/components/DetailForm/DetailForm";
+import Modal from "@/components/Modal/Modal";
 import TokenModal from "@/containers/components/TokenModal";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <TokenModal />
+      <Modal>
+        <DetailForm/>
+      </Modal>
     </div>
   );
 };
