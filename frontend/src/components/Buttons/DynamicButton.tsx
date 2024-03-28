@@ -10,7 +10,7 @@ const DynamicButton = ({
 }: Button) => {
   return (
     <button
-      className={`w-max p-button ${backgroundColor} border ${borderColor} rounded-lg text-xl font-medium text-white`}
+      className={`w-max p-2 px-6 ${backgroundColor} border ${borderColor} rounded-lg text-xl font-medium text-white`}
       onClick={handle}
       type={type}
     >

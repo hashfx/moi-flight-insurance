@@ -31,6 +31,17 @@ export type TokenDetail = {
 	decimals: any;
 }
 
+export type FormDetails = {
+	departureDate: string;
+	country: string;
+	destination: string;
+	flightNumber: string;
+	firstName: string;
+	lastName: string;
+	seatNumber: string;
+	source: string;
+}
+
 interface AuthContextType {
 	mnemonic: string;
 	setMnemonic: (mnemonic: string) => void;
@@ -56,6 +67,8 @@ interface AuthContextType {
 	setTokenDetails: (tokenDetail: TokenDetail) => void;
 	refillTime: string;
 	setRefillTime: (refillTime: string) => void;
+	formDetails: FormDetails;
+	setFormDetails: (formDetails: FormDetails) => void;
 }
 
 interface childProp {
@@ -80,6 +93,16 @@ const AuthProvider = ({ children }: childProp) => {
     symbol: "", 
     decimals: null, 
   });
+	const [formDetails, setFormDetails] = useState({
+		departureDate: "",
+		country: "",
+		source: "",
+		destination: "",
+		flightNumber: "",
+		seatNumber: "",
+		firstName: "",
+		lastName: ""
+	});
 	const [refillTime, setRefillTime] = useState("00:00:00");
 
 	useEffect(() => {
@@ -152,7 +175,9 @@ const AuthProvider = ({ children }: childProp) => {
 				tokenDetails,
 				setTokenDetails,
 				refillTime,
-				setRefillTime
+				setRefillTime,
+				formDetails,
+				setFormDetails,
 			}}
 		>
 			{children}

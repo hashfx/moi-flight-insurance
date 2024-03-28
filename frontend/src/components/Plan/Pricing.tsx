@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthProvider";
 import TokenModal from "@/containers/components/TokenModal";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import DetailForm from "../DetailForm/DetailForm";
 
 const frequencies = {
   value: "monthly",
@@ -148,10 +149,13 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-      {openClaimModal && refillTime !== "00:00:00" && balance <  selectedPlans.priceInNumber && (
+      {openClaimModal && refillTime === "00:00:00" && balance <  selectedPlans.priceInNumber && (
         <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
           <TokenModal />
         </div>
+      )}
+      {openClaimModal && refillTime !== "00:00:00" && balance >  selectedPlans.priceInNumber && (
+        <DetailForm />
       )}
     </>
   );
