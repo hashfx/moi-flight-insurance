@@ -69,7 +69,7 @@ endpoint invokable PurchasePolicy!(pnrNumber String, premiumAmount U256)->(purch
             if policies[pnrNumber]?:
                 throw "Policy already exists for this PNR"
             else:
-                var newPolicy = Policy{premiumAmount:premiumAmount, claimableAmount: premiumAmount*10, status:"active"}
+                var newPolicy = Policy{premiumAmount:premiumAmount, claimableAmount: premiumAmount*10, status: "active"}
                 newPolicy.policyNo = len(policies)+1
                 policies[pnrNumber] = newPolicy
                 transfer!(from : Address(Sender), to : Address(FlightInsurance) ,value : policies[pnrNumber].premiumAmount)
@@ -83,7 +83,7 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
             if policies[pnrNumber].claimableAmount > 0:
                 mutate balanceOf <- FlightInsurance.State.balanceOf:
                //here comes the logic for doing payout according to the policy
-                    if policies[pnrNumber].claimableAmount > balanceOf[Address(FlightInsurance)]:
+                    if (policies[pnrNumber].premiumAmount) > balanceOf[Address(FlightInsurance)]:
                         throw "Insufficient funds in the pool"
                     else:
                         var contractBalance U256 = balanceOf[Address(FlightInsurance)]
@@ -102,8 +102,8 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
         
             
 
-endpoint invokable PolicyStatus!(pnrNumber String)->(policyStatus String):
-    mutate policies <- FlightInsurance.State.policies:
+endpoint invokable PolicyStatus(pnrNumber String)->(policyStatus String):
+    observe policies <- FlightInsurance.State.policies:
         yield policyStatus policies[pnrNumber].status
 
 ////////////////////////

@@ -10,7 +10,7 @@
       "kind": "constant",
       "data": {
         "type": "u256",
-        "value": "0x0303e8"
+        "value": "0x032710"
       }
     },
     {
@@ -769,7 +769,7 @@
             81,
             5,
             5,
-            2,
+            1,
             114,
             6,
             73,
@@ -1033,7 +1033,7 @@
       ],
       "kind": "routine",
       "data": {
-        "name": "PolicyStatus!",
+        "name": "PolicyStatus",
         "kind": "invokable",
         "accepts": [
           {
@@ -1058,19 +1058,16 @@
             1,
             0,
             83,
-            1,
+            0,
             0,
             1,
             81,
-            1,
-            1,
+            0,
+            0,
             3,
             5,
-            1,
             0,
-            129,
-            0,
-            8
+            0
           ]
         }
       }
