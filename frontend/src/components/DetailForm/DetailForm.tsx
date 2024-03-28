@@ -2,9 +2,12 @@
 import { useAuth } from "@/context/AuthProvider";
 import DynamicButton from "../Buttons/DynamicButton";
 import { useRouter } from "next/navigation";
+import countries from "../Globe/assets/countries_110m.json";
+
 export default function DetailForm() {
   const { formDetails, setFormDetails, setOpenClaimModal } = useAuth();
   const router = useRouter();
+
   const handleDetailForm = (e: React.FormEvent<HTMLFormElement> | any) => {
     e.preventDefault();
     const target = e.target as HTMLInputElement;
@@ -52,6 +55,7 @@ export default function DetailForm() {
                   type="text"
                   name="firstName"
                   id="firstName"
+                  placeholder="Enter first name"
                   value={formDetails.firstName}
                   onChange={handleDetailForm}
                   autoComplete="none"
@@ -71,6 +75,7 @@ export default function DetailForm() {
                 <input
                   type="text"
                   name="lastName"
+                  placeholder="Enter last name"
                   value={formDetails.lastName}
                   onChange={handleDetailForm}
                   id="lastName"
@@ -95,7 +100,7 @@ export default function DetailForm() {
                   name="departureDate"
                   type="datetime-local"
                   autoComplete="departureDate"
-                  className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
+                  className="px-3 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
             </div>
@@ -119,19 +124,17 @@ export default function DetailForm() {
                   <option className="bg-white/5" value="">
                     Select Country
                   </option>
-                  <option
-                    className="bg-white/5"
-                    value={"India"}
-                    defaultChecked={true}
-                  >
-                    India
-                  </option>
-                  <option className="bg-white/5" value={"United States"}>
-                    United States
-                  </option>
-                  <option className="bg-white/5" value={"Mexico"}>
-                    Mexico
-                  </option>
+                  {countries.features.map((singleCountry, index) => {
+                    return (
+                      <option
+                        key={index}
+                        className="bg-white/5"
+                        value={singleCountry.properties.geounit}
+                      >
+                        {singleCountry.properties.geounit}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
@@ -151,7 +154,7 @@ export default function DetailForm() {
                   onChange={handleDetailForm}
                   id="source"
                   autoComplete="source"
-                  placeholder="e.g Indore, Bhopal, Mumbai ..."
+                  placeholder="Eg.  Indore"
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
@@ -172,7 +175,7 @@ export default function DetailForm() {
                   onChange={handleDetailForm}
                   id="destination"
                   autoComplete="destination"
-                  placeholder="e.g Indore, Bhopal, Mumbai ..."
+                  placeholder="Eg.  Bhopal"
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
@@ -193,7 +196,7 @@ export default function DetailForm() {
                   value={formDetails.flightNumber}
                   onChange={handleDetailForm}
                   autoComplete="address-level1"
-                  placeholder="e.g AI-1234"
+                  placeholder="Eg. AI-1234"
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
@@ -212,6 +215,7 @@ export default function DetailForm() {
                   name="seatNumber"
                   value={formDetails.seatNumber}
                   onChange={handleDetailForm}
+                  placeholder="Eg. 26A"
                   id="seatNumber"
                   autoComplete="seatNumber"
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"

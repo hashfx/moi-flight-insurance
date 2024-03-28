@@ -21,12 +21,12 @@ const deployLogic = async () => {
   // Deploy the logic get ixResponse
   const ixResponse = await logic.deploy(
     "Init!",
-    "Sample Token",
-    "ST",
+    "Insurance Token",
+    "IT",
     0,
     "10000",
     {
-      fuelLimit: 5000,
+      fuelLimit: 20000,
     }
   );
   console.log("------ Deploying Logic ----------");
