@@ -6,7 +6,7 @@ type IModalProps = {
 
 const Modal = ({ children }: IModalProps) => {
   return (
-    <div className="flex justify-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 absolute bg-[#20262E] border-[#797979] border rounded-md">
+    <div className="flex justify-center items-center top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 absolute bg-[#20262E] border-[#797979] border rounded-md z-50">
       {children}
     </div>
   );

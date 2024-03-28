@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import DynamicButtonWithArrow from "@/components/Buttons/DynamicButtonWithArrow";
 import Modal from "@/components/Modal/Modal";
 import { useAuth } from "@/context/AuthProvider";
 import React from "react";
 
 const TokenModal = () => {
-  const { setOpenClaimModal, balance} = useAuth();
+  const { setOpenClaimModal, balance } = useAuth();
   return (
     <div className="relative w-full h-full bg-black bg-opacity-50 backdrop-blur">
       <Modal>

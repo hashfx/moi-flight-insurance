@@ -52,8 +52,8 @@ func getPolicyPayout():
 // Mutate/Write Endpoints
 ////////////////////////
 
-endpoint invokable UpdateFlightDelayStatus(flightNumber String, departureTime U256, delayedBy U256):
-    pass
+// endpoint invokable UpdateFlightDelayStatus(flightNumber String, departureTime U256, delayedBy U256):
+//     pass
     // onlyAdmin() check
     // Update the flight delay status
     // only if the flight is not delayed then
@@ -61,7 +61,7 @@ endpoint invokable UpdateFlightDelayStatus(flightNumber String, departureTime U2
 
 
 endpoint invokable PurchasePolicy!(pnrNumber String, premiumAmount U256)->(purchasedPolicy Policy):
-    onlyAdmin()
+    // onlyAdmin()
     if premiumAmount<=0:
         throw "Premium amount should be greater than 0"
     else:
@@ -72,19 +72,12 @@ endpoint invokable PurchasePolicy!(pnrNumber String, premiumAmount U256)->(purch
                 var newPolicy = Policy{premiumAmount:premiumAmount, claimableAmount: premiumAmount*10, status:"active"}
                 newPolicy.policyNo = len(policies)+1
                 policies[pnrNumber] = newPolicy
-                // mutate pool <- FlightInsurance.State.pool:
                 transfer!(from : Address(Sender), to : Address(FlightInsurance) ,value : policies[pnrNumber].premiumAmount)
                 yield purchasedPolicy policies[pnrNumber]
-    // Check if departure time is atleast 6 hours from current time
-    // Create Policy if policy doesn't exist
-    // Transfer the funds from user to logic using transfer!() function of internal token logic
-    // update the activePolicies number
-    // emit an event for the oracle with flightNumber & departure time
-    // so that it can keep track of it and call updateFlightDelayStatus once journey is commenced
 
 
 endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedPolicy Policy):
-    onlyAdmin()
+    // onlyAdmin()
     mutate policies <- FlightInsurance.State.policies:
         if policies[pnrNumber].status == "active":
             if policies[pnrNumber].claimableAmount > 0:
@@ -108,12 +101,6 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
             throw "Policy is not active"
         
             
-    // Check if the flight is delayed
-    // Check if the policy is not already claimed
-    // Calculate policyPayout
-    // transfer funds
-    // mark policy as paid
-    // decrease the activePolicy by 1
 
 endpoint invokable PolicyStatus!(pnrNumber String)->(policyStatus String):
     mutate policies <- FlightInsurance.State.policies:
@@ -129,3 +116,15 @@ endpoint invokable PolicyStatus!(pnrNumber String)->(policyStatus String):
 ///////////////////////
 
 // Flight cancelled would be an edge case
+    // Check if the flight is delayed
+    // Check if the policy is not already claimed
+    // Calculate policyPayout
+    // transfer funds
+    // mark policy as paid
+    // decrease the activePolicy by 1
+    // Check if departure time is atleast 6 hours from current time
+    // Create Policy if policy doesn't exist
+    // Transfer the funds from user to logic using transfer!() function of internal token logic
+    // update the activePolicies number
+    // emit an event for the oracle with flightNumber & departure time
+    // so that it can keep track of it and call updateFlightDelayStatus once journey is commenced

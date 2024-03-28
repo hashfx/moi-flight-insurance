@@ -6,6 +6,7 @@ import TokenModal from "@/containers/components/TokenModal";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import DetailForm from "../DetailForm/DetailForm";
+import Modal from "../Modal/Modal";
 
 const frequencies = {
   value: "monthly",
@@ -68,21 +69,33 @@ const Pricing = () => {
     balance,
     refillTime,
     setSelectedPlans,
-    selectedPlans
+    selectedPlans,
   } = useAuth();
   const handlePlans = async (plan: PlanDetail) => {
+    console.log("plan", plan);
     setOpenClaimModal(true);
     setSelectedPlans(plan);
   };
 
   const router = useRouter();
-  useEffect(() => {
-    if (!wallet) {
-      router.push("/");
-    }
-  }, [router, wallet])
+  // useEffect(() => {
+  //   if (!wallet) {
+  //     router.push("/");
+  //   }
+  // }, [router, wallet]);
+  console.log(openClaimModal && balance < selectedPlans.priceInNumber);
   return (
     <>
+      {openClaimModal && balance < selectedPlans.priceInNumber && (
+        <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+          <TokenModal />
+        </div>
+      )}
+      {openClaimModal && balance > selectedPlans.priceInNumber && (
+        <Modal>
+          <DetailForm />
+        </Modal>
+      )}
       <div className="pt-10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h1 className="text-4xl font-semibold">Plans</h1>
@@ -149,14 +162,6 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-      {openClaimModal && refillTime === "00:00:00" && balance <  selectedPlans.priceInNumber && (
-        <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
-          <TokenModal />
-        </div>
-      )}
-      {openClaimModal && refillTime !== "00:00:00" && balance >  selectedPlans.priceInNumber && (
-        <DetailForm />
-      )}
     </>
   );
 };
