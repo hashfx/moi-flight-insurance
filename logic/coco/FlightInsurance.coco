@@ -1,6 +1,5 @@
 coco FlightInsurance
 
-// Persistent state of the FlightInsurance module
 state persistent:
     // Internal Token state variables
     name String
@@ -10,17 +9,25 @@ state persistent:
     balanceOf Map[Address]U256
     allowances Map[Address]Map[Address]U256
     nextClaims Map[Address]I256
-    // Flight Insurance state variables
-    pool Address
-    policies Map[String] Policy                         // Map of PNR => Policy              
-    // activePolicies U256                               // Policy would go inactive if the flight is not delayed or if the user claims the policy
-    owner Address
-    // [U256][String]
-class Policy:
-    field policyNo U64
-    field premiumAmount U256
-    field claimableAmount U256
-    field status String
+    
+    yourPolicies Map[Address][]Policy
+    // Map of FlightNo. => Departure Time => PNR No. => Policy
+    policies Map[String]Map[U256]Map[String]Policy 
+    // Map of FlightNo. => Departure Time => Delayed Time
+    activePolicies U256 
+    admin Address
+
+// Keeping these as constants for now
+const DEPARTURE_INTERVAL U256 = 7200
+
+class Policy : 
+    field holder Address
+    field Name String
+    field claimStatus Bool
+    field flightNo String
+    field premium U256
+    field departureTime U256
+    field pnrNo String
 
 endpoint deployer Init!(name String, symbol String, decimals U256, totalSupply U256):
     // For Token Initializations
@@ -29,103 +36,82 @@ endpoint deployer Init!(name String, symbol String, decimals U256, totalSupply U
     mutate decimals -> FlightInsurance.State.decimals
     mint!(account: Address(Sender), value: totalSupply)
 
-    // For FlightInsurance Initializations
-    mutate Address(Sender)-> FlightInsurance.State.owner
+    mutate Address(Sender) -> FlightInsurance.State.admin
 
-
-////////////////////////
-// Internal Functions
-////////////////////////
+///////////////////////
+// FUNCTIONS
+//////////////////////
 
 func onlyAdmin():
-    observe owner <- FlightInsurance.State.owner:
-        if(Address(Sender)!=owner):
-            throw "You are not authorized to perform this action"
-
-func getPolicyPayout():
-    pass
-    // totalFunds = balanceOf() with logicAddress
-    // totalFunds / unclaimedPolicy - 10% for company profit
+    // Check if the address of the sender is address of the admin 
+    observe admin <- FlightInsurance.State.admin:
+        if(Address(Sender)!=admin):
+            throw "Not Authorized"
 
 
-////////////////////////
+func purchasePolicyChecks(flightNumber String, departureTime U256, pnrNumber String):
+    var currentTime = U256(Env.Timestamp())
+
+    if(departureTime > currentTime + DEPARTURE_INTERVAL): 
+        throw "Policy should be bought 2 hours before departure time"
+
+    observe policies <- FlightInsurance.State.policies:
+        if policies[flightNumber][departureTime][pnrNumber]?:
+            throw "Policy Already Exist"
+
+
+
+func getPolicyPayout(MAX_CLAIM U256) -> (payout U256):
+    // var claimAmt = totalFunds/activePolicies
+    // if claimAmt > maxClaim ? return maxClaim
+    
+    // min(maxClaim amount, (totalFunds/activePolicies))
+    var claimAmount U256
+    observe balanceOf, activePolicies <- FlightInsurance.State.balanceOf, FlightInsurance.State.activePolicies:
+        claimAmount = balanceOf[Address(FlightInsurance)]/activePolicies
+    if(claimAmount > MAX_CLAIM):
+        return (payout: MAX_CLAIM)
+    return (payout: claimAmount)
+
+
+///////////////////////
 // Mutate/Write Endpoints
-////////////////////////
+//////////////////////
 
-endpoint invokable UpdateFlightDelayStatus(flightNumber String, departureTime U256, delayedBy U256):
-    pass
-    // onlyAdmin() check
-    // Update the flight delay status
-    // only if the flight is not delayed then
-        // decrease activePolicies by the no of policies on this flight
+endpoint invokable PurchasePolicy!(userName String, flightNumber String, departureTime U256, pnrNumber String, premiumAmount U256):
 
-
-endpoint invokable PurchasePolicy!(pnrNumber String, premiumAmount U256)->(purchasedPolicy Policy):
-    onlyAdmin()
-    if premiumAmount<=0:
-        throw "Premium amount should be greater than 0"
-    else:
-        mutate policies <- FlightInsurance.State.policies:
-            if policies[pnrNumber]?:
-                throw "Policy already exists for this PNR"
-            else:
-                var newPolicy = Policy{premiumAmount:premiumAmount, claimableAmount: premiumAmount*10, status:"active"}
-                newPolicy.policyNo = len(policies)+1
-                policies[pnrNumber] = newPolicy
-                // mutate pool <- FlightInsurance.State.pool:
-                transfer!(from : Address(Sender), to : Address(FlightInsurance) ,value : policies[pnrNumber].premiumAmount)
-                yield purchasedPolicy policies[pnrNumber]
-    // Check if departure time is atleast 6 hours from current time
-    // Create Policy if policy doesn't exist
-    // Transfer the funds from user to logic using transfer!() function of internal token logic
-    // update the activePolicies number
-    // emit an event for the oracle with flightNumber & departure time
-    // so that it can keep track of it and call updateFlightDelayStatus once journey is commenced
-
-
-endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedPolicy Policy):
-    onlyAdmin()
-    mutate policies <- FlightInsurance.State.policies:
-        if policies[pnrNumber].status == "active":
-            if policies[pnrNumber].claimableAmount > 0:
-                mutate balanceOf <- FlightInsurance.State.balanceOf:
-               //here comes the logic for doing payout according to the policy
-                    if policies[pnrNumber].claimableAmount > balanceOf[Address(FlightInsurance)]:
-                        throw "Insufficient funds in the pool"
-                    else:
-                        var contractBalance U256 = balanceOf[Address(FlightInsurance)]
-                        var profitCut U256 = contractBalance / 10
-                        var claimAmount = contractBalance - profitCut / U256(len(policies))
-                        if claimAmount <= policies[pnrNumber].claimableAmount:
-                            transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: claimAmount )
-                            policies[pnrNumber].status = "claimed"
-                        else:
-                            transfer!(from: Address(FlightInsurance), to: Address(Sender), value : policies[pnrNumber].claimableAmount)
-                yield claimedPolicy policies[pnrNumber]
-            else:
-                throw "Policy is not claimable"
-        else:
-            throw "Policy is not active"
+    var user = Address(Sender)
+    purchasePolicyChecks(flightNumber, departureTime, pnrNumber)
+    
+    transfer!(from : user, to : Address(FlightInsurance), value : premiumAmount)
+    var newPolicy = Policy{Name : userName, holder: user, claimStatus: false,flightNo: flightNumber, premium: premiumAmount, departureTime: departureTime, pnrNo: pnrNumber}
+    mutate policies, activePolicies, yourPolicies <- FlightInsurance.State.policies, FlightInsurance.State.activePolicies, FlightInsurance.State.yourPolicies:
         
-            
-    // Check if the flight is delayed
-    // Check if the policy is not already claimed
-    // Calculate policyPayout
-    // transfer funds
-    // mark policy as paid
-    // decrease the activePolicy by 1
-
-endpoint invokable PolicyStatus!(pnrNumber String)->(policyStatus String):
-    mutate policies <- FlightInsurance.State.policies:
-        yield policyStatus policies[pnrNumber].status
-
-////////////////////////
-// Observe/Read Endpoints
-///////////////////////
+        policies[flightNumber][departureTime][pnrNumber] = newPolicy
+        yourPolicies[user] = append(yourPolicies[user], newPolicy)
+        activePolicies += 1
 
 
-////////////////////////
-// Notes
-///////////////////////
+endpoint invokable ClaimPolicy!(flightNumber String, departureTime U256, pnrNumber String):
 
-// Flight cancelled would be an edge case
+    observe policies, <- FlightInsurance.State.policies:
+        if(policies[flightNumber][departureTime][pnrNumber].holder != Address(Sender)):
+            throw "You are not the owner of the policy"
+        if(policies[flightNumber][departureTime][pnrNumber].claimStatus != false):
+            throw "Policy Already Claimed"
+
+    var policyHolder = Address(Sender)
+    var MAX_CLAIM U256
+    observe policies <- FlightInsurance.State.policies:
+        MAX_CLAIM = policies[flightNumber][departureTime][pnrNumber].premium * 10
+
+    var payout U256 = getPolicyPayout(MAX_CLAIM)
+    transfer!(from: Address(FlightInsurance), to: policyHolder, value: payout)
+
+    mutate policies, activePolicies <- FlightInsurance.State.policies, FlightInsurance.State.activePolicies:
+        policies[flightNumber][departureTime][pnrNumber].claimStatus = true
+        activePolicies -= 1
+
+endpoint invokable GetPolicy(account Address)->(userPolicies []Policy):
+    observe yourPolicies <- FlightInsurance.State.yourPolicies:
+        yield userPolicies yourPolicies[account]

@@ -1,7 +1,7 @@
 coco FlightInsurance
 
 // Local constant variables 
-const CLAIM_AMOUNT U256 = 1000
+const CLAIM_AMOUNT U256 = 20000
 const CLAIM_INTERVAL I256 = 86400  // every 1 day
 
 ////////////////////////

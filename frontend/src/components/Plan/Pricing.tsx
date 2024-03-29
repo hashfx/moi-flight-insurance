@@ -76,13 +76,24 @@ const Pricing = () => {
   };
 
   const router = useRouter();
-  useEffect(() => {
-    if (!wallet) {
-      router.push("/");
-    }
-  }, [router, wallet])
+  // useEffect(() => {
+  //   if (!wallet) {
+  //     router.push("/");
+  //   }
+  // }, [router, wallet]);
+  console.log(openClaimModal && balance < selectedPlans.priceInNumber);
   return (
     <>
+      {openClaimModal && balance < selectedPlans.priceInNumber && (
+        <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+          <TokenModal />
+        </div>
+      )}
+      {openClaimModal && balance > selectedPlans.priceInNumber && (
+        <Modal>
+          <DetailForm />
+        </Modal>
+      )}
       <div className="pt-10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h1 className="text-4xl font-semibold">Plans</h1>
