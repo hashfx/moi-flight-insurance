@@ -1,11 +1,12 @@
 "use client";
 import { useAuth } from "@/context/AuthProvider";
 import DynamicButton from "../Buttons/DynamicButton";
+import logic from "@/interface/logic";
 import { useRouter } from "next/navigation";
-import countries from "../Globe/assets/countries_110m.json";
 
 export default function DetailForm() {
-  const {formDetails, setFormDetails, setOpenClaimModal, setResponseData, selectedPlans, responseData} = useAuth();
+  const {formDetails, setFormDetails, setOpenClaimModal, setResponseData, selectedPlans, responseData, wallet} = useAuth();
+  const router = useRouter();
  
   const handleDetailForm = (e: React.FormEvent<HTMLFormElement>  | any) => {
     e.preventDefault();
@@ -22,7 +23,9 @@ export default function DetailForm() {
       flightNumber: responseData.flightNumber,
     };
     setResponseData(data);
+    logic.PurchasePolicy(wallet, data.userName, data.flightNumber, data.premiumAmount, data.pnrNumber, data.departureTime);
     setOpenClaimModal(false);
+    router.push("/dashboard");
   }
   return (  
     <form className='p-6'>
