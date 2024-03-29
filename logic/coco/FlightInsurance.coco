@@ -22,12 +22,17 @@ const DEPARTURE_INTERVAL U256 = 7200
 
 class Policy : 
     field holder Address
+    field insuranceNumber String
     field Name String
     field claimStatus Bool
     field flightNo String
+    field start String // Starting airport location
+    field end String   // Ending airport location
     field premium U256
     field departureTime U256
     field pnrNo String
+    field seatNo String
+    field status U256 // 0 -> not updated, 1 -> on time, 2-> delayed 
 
 endpoint deployer Init!(name String, symbol String, decimals U256, totalSupply U256):
     // For Token Initializations
@@ -78,13 +83,12 @@ func getPolicyPayout(MAX_CLAIM U256) -> (payout U256):
 // Mutate/Write Endpoints
 //////////////////////
 
-endpoint invokable PurchasePolicy!(userName String, flightNumber String, departureTime U256, pnrNumber String, premiumAmount U256):
+endpoint invokable PurchasePolicy!(insuranceNo String, userName String, flightNumber String, startDestination String, endDestination String, premiumAmount U256, departureTime U256, pnrNumber String):
 
     var user = Address(Sender)
     purchasePolicyChecks(flightNumber, departureTime, pnrNumber)
-    
     transfer!(from : user, to : Address(FlightInsurance), value : premiumAmount)
-    var newPolicy = Policy{Name : userName, holder: user, claimStatus: false,flightNo: flightNumber, premium: premiumAmount, departureTime: departureTime, pnrNo: pnrNumber}
+    var newPolicy = Policy{ holder: user, insuranceNumber : insuranceNo , Name : userName, claimStatus: false,flightNo: flightNumber, start : startDestination, end : endDestination, premium: premiumAmount, departureTime: departureTime, pnrNo: pnrNumber}
     mutate policies, activePolicies, yourPolicies <- FlightInsurance.State.policies, FlightInsurance.State.activePolicies, FlightInsurance.State.yourPolicies:
         
         policies[flightNumber][departureTime][pnrNumber] = newPolicy
@@ -95,8 +99,6 @@ endpoint invokable PurchasePolicy!(userName String, flightNumber String, departu
 endpoint invokable ClaimPolicy!(flightNumber String, departureTime U256, pnrNumber String):
 
     observe policies, <- FlightInsurance.State.policies:
-        if(policies[flightNumber][departureTime][pnrNumber].holder != Address(Sender)):
-            throw "You are not the owner of the policy"
         if(policies[flightNumber][departureTime][pnrNumber].claimStatus != false):
             throw "Policy Already Claimed"
 
