@@ -88,24 +88,28 @@ endpoint invokable ClaimPolicy!(pnrNumber String, premiumAmount U256)->(claimedP
                     else:
                         var contractBalance U256 = balanceOf[Address(FlightInsurance)]
                         var profitCut U256 = contractBalance / 10
-                        var claimAmount = contractBalance - profitCut / U256(len(policies))
+                        var claimAmount = (contractBalance - profitCut) / U256(len(policies))
                         if claimAmount <= policies[pnrNumber].claimableAmount:
-                            transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: claimAmount )
                             policies[pnrNumber].status = "claimed"
+                            transfer!(from : Address(FlightInsurance), to : Address(Sender) ,value: claimAmount )
                         else:
-                            transfer!(from: Address(FlightInsurance), to: Address(Sender), value : policies[pnrNumber].claimableAmount)
+                            policies[pnrNumber].status = "claimed"
+                            transfer!(from: Address(FlightInsurance), to: Address(Sender), value : U256(policies[pnrNumber].claimableAmount))
                 yield claimedPolicy policies[pnrNumber]
             else:
                 throw "Policy is not claimable"
         else:
             throw "Policy is not active"
         
-            
+
 
 endpoint invokable PolicyStatus(pnrNumber String)->(policyStatus String):
     observe policies <- FlightInsurance.State.policies:
         yield policyStatus policies[pnrNumber].status
 
+endpoint invokable PolicyDetails(pnrNumber String)->(policyDetails Policy):
+    observe policies <- FlightInsurance.State.policies:
+        yield policyDetails policies[pnrNumber]
 ////////////////////////
 // Observe/Read Endpoints
 ///////////////////////
