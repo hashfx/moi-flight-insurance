@@ -12,17 +12,20 @@ export type ClaimDetail = {
 };
 
 interface ResponseData {
-	claimableAmount: string;
-	premiumPaid: string;
-	dateOfFlight: string;
-	boardingTo: string;
+	// claimableAmount: string;
+	// premiumPaid: string;
+	// dateOfFlight: string;
+	// boardingTo: string;
 	flightNumber: string;
-	boardingFrom: string;
-	passengerName: string;
-	insuranceNumber: string;
+	// boardingFrom: string;
+	// passengerName: string;
+	// insuranceNumber: string;
 	pnrNumber: string;
-	status: string;
-	updatedOn: string;
+	// status: string;
+	// updatedOn: string;
+	userName: string;
+	departureTime: number;
+	premiumAmount: number;
 }
 
 export type TokenDetail = {
@@ -32,14 +35,10 @@ export type TokenDetail = {
 }
 
 export type FormDetails = {
-	departureDate: string;
-	country: string;
-	destination: string;
-	flightNumber: string;
 	firstName: string;
 	lastName: string;
-	seatNumber: string;
-	source: string;
+	// seatNumber: string;
+	pnr: string;
 }
 
 interface AuthContextType {
@@ -47,8 +46,8 @@ interface AuthContextType {
 	setMnemonic: (mnemonic: string) => void;
 	wallet: any;
 	setWallet: any;
-	pnrNumber: string;
-	setPnrNumber: (pnrNumber: string) => void;
+	flightNumber: string;
+	setFlightNumber: (flightNumber: string) => void;
 	claimDetails: ClaimDetail;
 	setClaimDetails: (claimDetails: ClaimDetail) => void;
 	responseData: ResponseData;
@@ -80,7 +79,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AuthProvider = ({ children }: childProp) => {
 	const [mnemonic, setMnemonic] = useState("");
 	const [wallet, setWallet] = useState<Wallet | undefined>();
-	const [pnrNumber, setPnrNumber] = useState("");
+	const [flightNumber, setFlightNumber] = useState("");
 	const [showConnectModal, setShowConnectModal] = useState(false);
 	const [claimDetails, setClaimDetails] = useState({} as ClaimDetail);
 	const [responseData, setResponseData] = useState({} as ResponseData);
@@ -94,12 +93,8 @@ const AuthProvider = ({ children }: childProp) => {
     decimals: null, 
   });
 	const [formDetails, setFormDetails] = useState({
-		departureDate: "",
-		country: "",
-		source: "",
-		destination: "",
-		flightNumber: "",
-		seatNumber: "",
+		pnr: "",
+		// seatNumber: "",
 		firstName: "",
 		lastName: ""
 	});
@@ -138,7 +133,7 @@ const AuthProvider = ({ children }: childProp) => {
       });
     };
     getTokenDetails();
-  }, []);
+  }, [wallet]);
 
   useEffect(() => {
     const getTokenBalance = async () => {
@@ -156,8 +151,8 @@ const AuthProvider = ({ children }: childProp) => {
 				setMnemonic,
 				setWallet,
 				wallet,
-				pnrNumber,
-				setPnrNumber,
+				flightNumber,
+				setFlightNumber,
 				claimDetails,
 				setClaimDetails,
 				responseData,

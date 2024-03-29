@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthProvider";
 import DynamicButton from "../Buttons/DynamicButton";
 
 export default function DetailForm() {
-  const {formDetails, setFormDetails, setOpenClaimModal} = useAuth();
+  const {formDetails, setFormDetails, setOpenClaimModal, setResponseData, selectedPlans, responseData} = useAuth();
  
   const handleDetailForm = (e: React.FormEvent<HTMLFormElement>  | any) => {
     e.preventDefault();
@@ -12,11 +12,19 @@ export default function DetailForm() {
   }
   const handleFormSubmit=(e:any)=>{
     e.preventDefault();
-    console.log(formDetails)
+    const data = {
+      userName: formDetails.firstName + " " + formDetails.lastName,
+      pnrNumber : formDetails.pnr,
+      premiumAmount: selectedPlans.priceInNumber,
+      departureTime: responseData.departureTime,
+      flightNumber: responseData.flightNumber,
+    };
+    setResponseData(data);
+    setOpenClaimModal(false);
   }
   return (  
     <form className='p-6'>
-      <div className="space-y-12 h-[70vh] overflow-y-scroll no-scrollbar">
+      <div className="space-y-12 overflow-y-scroll no-scrollbar">
 
         <div className="border-b border-white/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-white">Flight Information</h2>
@@ -57,99 +65,25 @@ export default function DetailForm() {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
-              <label htmlFor="departureDate" className="block text-sm font-medium leading-6 text-white">
-                Departure Date
-              </label>
-              <div className="mt-2">
-                <input
-                  id="departureDate"
-                  value = {formDetails.departureDate}
-                  onChange = {handleDetailForm}
-                  name="departureDate"
-                  type="datetime-local"
-                  autoComplete="departureDate"
-                  className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="country" className="block text-sm font-medium leading-6 text-white">
-                Country
-              </label>
-              <div className="mt-2">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="India"
-                  value = {formDetails.country}
-                  onChange = {handleDetailForm}
-                  className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 [&_*]:text-black outline-none"
-                >
-                  <option className="bg-white/5" value="">Select Country</option>
-                  <option className="bg-white/5" value={"India"} defaultChecked={true}>India</option>
-                  <option className="bg-white/5" value={"United States"}>United States</option>
-                  <option className="bg-white/5" value={"Mexico"}>Mexico</option>
-                </select>
-              </div>
-            </div>
-
             <div className="col-span-full">
-              <label htmlFor="source" className="block text-sm font-medium leading-6 text-white">
-                Flight Source
+              <label htmlFor="pnr" className="block text-sm font-medium leading-6 text-white">
+                PNR Number
               </label>
               <div className="mt-2">
                 <input
                   type="text"
-                  name="source"
-                  value = {formDetails.source}
+                  name="pnr"
+                  value = {formDetails.pnr}
                   onChange = {handleDetailForm}
-                  id="source"
-                  autoComplete="source"
+                  id="pnr"
+                  autoComplete="pnr"
                   placeholder="e.g Indore, Bhopal, Mumbai ..."
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
             </div>
 
-            <div className="sm:col-span-2 sm:col-start-1">
-              <label htmlFor="destination" className="block text-sm font-medium leading-6 text-white">
-                Flight Destination
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="destination"
-                  value = {formDetails.destination}
-                  onChange = {handleDetailForm}
-                  id="destination"
-                  autoComplete="destination"
-                  placeholder="e.g Indore, Bhopal, Mumbai ..."
-                  className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="flightNumber" className="block text-sm font-medium leading-6 text-white">
-                Flight Number
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="flightNumber"
-                  id="flightNumber"
-                  value = {formDetails.flightNumber}
-                  onChange = {handleDetailForm}
-                  autoComplete="address-level1"
-                  placeholder="e.g AI-1234"
-                  className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
+            {/* <div className="sm:col-span-2">
               <label htmlFor="seatNumber" className="block text-sm font-medium leading-6 text-white">
                 Seat Number
               </label>
@@ -164,7 +98,7 @@ export default function DetailForm() {
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
