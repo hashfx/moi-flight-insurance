@@ -16,16 +16,19 @@ interface ResponseData {
 	// premiumPaid: string;
 	// dateOfFlight: string;
 	// boardingTo: string;
+	insuranceNo: string;
+	userName: string;
 	flightNumber: string;
+	startDestination: string;
+	endDestination: string;
+	premiumAmount: number;
+	departureTime: number;
+	pnrNumber: string;
 	// boardingFrom: string;
 	// passengerName: string;
 	// insuranceNumber: string;
-	pnrNumber: string;
 	// status: string;
 	// updatedOn: string;
-	userName: string;
-	departureTime: number;
-	premiumAmount: number;
 }
 
 export type TokenDetail = {

@@ -16,14 +16,17 @@ export default function DetailForm() {
   const handleFormSubmit = (e: any) => {
     e.preventDefault();
     const data = {
+      insuranceNo: "0",
       userName: formDetails.firstName + " " + formDetails.lastName,
-      pnrNumber : formDetails.pnr,
+      flightNumber: responseData.flightNumber,
+      startDestination: responseData.startDestination,
+      endDestination: responseData.endDestination,
       premiumAmount: selectedPlans.priceInNumber,
       departureTime: responseData.departureTime,
-      flightNumber: responseData.flightNumber,
+      pnrNumber : formDetails.pnr,
     };
     setResponseData(data);
-    logic.PurchasePolicy(wallet, data.userName, data.flightNumber, data.premiumAmount, data.pnrNumber, data.departureTime);
+    // logic.PurchasePolicy(wallet, data.userName, data.flightNumber, data.premiumAmount, data.pnrNumber, data.departureTime);
     setOpenClaimModal(false);
     router.push("/dashboard");
   }

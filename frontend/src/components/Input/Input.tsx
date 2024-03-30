@@ -7,10 +7,19 @@ import { convertTimeString } from "@/containers/components/TimeConverter";
 const Input = () => {
   const {flightNumber, setFlightNumber, setResponseData} = useAuth();
   const navigate = useRouter();
+  
+  const getDate = (daysToAdd = 0) => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + daysToAdd);
+
+    return tomorrow.toISOString().split('T')[0];
+  };
   const handlePnr = async () => {
     // checking the flight number through https://flightera-flight-data.p.rapidapi.com/flight/info?flnr=${flightNo} this api 
+    const date = getDate(0);
     try {
-      const response = await fetch(`https://flightera-flight-data.p.rapidapi.com/flight/info?flnr=${flightNumber}`, {
+      const response = await fetch(`https://flightera-flight-data.p.rapidapi.com/flight/info?flnr=${flightNumber}&date=${date}`, {
         method: "GET",
         headers: {
           'X-RapidAPI-Key': process.env.NEXT_PUBLIC_FLIGHT_KEY as string,
@@ -56,16 +65,21 @@ const Input = () => {
       if(data.Error){
         throw new Error(data.Error);
       }
+      console.log(data);
       setResponseData({
-        flightNumber: data.flnr,
-        departureTime: convertTimeString(data.scheduled_departure_utc),
-        premiumAmount: 0,
+        insuranceNo: "0",
         userName: "Test User",
+        flightNumber: data[0].flnr,
+        startDestination: data[0].departure_city,
+        endDestination: data[0].arrival_city,
+        premiumAmount: 0,
+        departureTime: convertTimeString(data[0].scheduled_departure_local),
         pnrNumber: "Test PNR",
+	
       })
       navigate.push("/plans");
     } catch (error: any) {
-      throw new Error(error);
+      console.log(error);
     }
   }
   return (

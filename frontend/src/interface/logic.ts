@@ -10,15 +10,15 @@ const ClaimToken = async (wallet: any) => {
 	return ixResponse.wait();
 };
 
-const UpdateFlightDelayStatus = async (wallet: any, flightNumber: number, departureTime: any, delayedBy: any) => {
-	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
-	const ixResponse = await logicDriver.routines.UpdateFlightDelayStatus(flightNumber, departureTime, delayedBy);
-	return ixResponse.result();
-};
+// const UpdateFlightDelayStatus = async (wallet: any, flightNumber: number, departureTime: any, delayedBy: any) => {
+// 	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
+// 	const ixResponse = await logicDriver.routines.UpdateFlightDelayStatus(flightNumber, departureTime, delayedBy);
+// 	return ixResponse.result();
+// };
 
-const PurchasePolicy = async (wallet: any, userName: string, flightNumber: string, departureTime: number, pnrNumber: string, premiumAmount: any) => {
+const PurchasePolicy = async (wallet: any, insuranceNo: string, userName: string, flightNumber: string, startDestination: string, endDestination : string, premiumAmount: number, departureTime: number, pnrNumber: string) => {
 	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
-	const ixResponse = await logicDriver.routines.PurchasePolicy(userName, flightNumber, departureTime, pnrNumber, premiumAmount);
+	const ixResponse = await logicDriver.routines.PurchasePolicy(insuranceNo, userName, flightNumber, startDestination, endDestination, premiumAmount, departureTime, pnrNumber);
 	return ixResponse.result();
 }
 
@@ -28,11 +28,11 @@ const ClaimPolicy = async (wallet: any, pnrNumber: number, premiumAmount: any) =
 	return ixResponse.result();
 }
 
-const PolicyStatus = async (wallet: any, pnrNumber: number) => {
-	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
-	const ixResponse = await logicDriver.routines.PolicyStatus(pnrNumber);
-	return ixResponse.result();
-}
+// const PolicyStatus = async (wallet: any, pnrNumber: number) => {
+// 	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
+// 	const ixResponse = await logicDriver.routines.PolicyStatus(pnrNumber);
+// 	return ixResponse.result();
+// }
 
 const Transfer = async (wallet: any, to: any, value: any) => {
 	const logicDriver = await getLogicDriver("0x0800007d76034add5ac07b5cfd57b35db3c4807dcf27ba98a9e8197c214e1c8c7ddf03", wallet);
@@ -95,6 +95,10 @@ const GetTokenSymbol = async () => {
 	const logicDriver = await getLogicDriver("0x0800002c7bb9f28b5cdae4f034eb06b675b5a683e8083b1e585e69a1cf8160b884991c", provider);
 	return logicDriver.routines.Symbol();
 };
+const GetPolicy = async (account : any) => {
+	const logicDriver = await getLogicDriver("0x0800002c7bb9f28b5cdae4f034eb06b675b5a683e8083b1e585e69a1cf8160b884991c", provider);
+	return logicDriver.routines.GetPolicy(account);
+  };
 
 const logic = {
 	GetTokenName,
@@ -104,10 +108,11 @@ const logic = {
 	GetTokenDecimals,
 	GetTokenSymbol,
 	ClaimToken,
-	UpdateFlightDelayStatus,
+	// UpdateFlightDelayStatus,
 	PurchasePolicy,
 	ClaimPolicy,
-	PolicyStatus,
+	// PolicyStatus,
+	GetPolicy,
 	Transfer,
 	Approve,
 	TotalSupply,
