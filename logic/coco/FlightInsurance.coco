@@ -98,13 +98,12 @@ endpoint invokable PurchasePolicy!(insuranceNo String, userName String, flightNu
 
 endpoint invokable ClaimPolicy!(flightNumber String, departureTime U256, pnrNumber String):
 
-    observe policies, <- FlightInsurance.State.policies:
-        if(policies[flightNumber][departureTime][pnrNumber].claimStatus != false):
-            throw "Policy Already Claimed"
-
     var policyHolder = Address(Sender)
     var MAX_CLAIM U256
+    
     observe policies <- FlightInsurance.State.policies:
+        if(policies[flightNumber][departureTime][pnrNumber].claimStatus != false):
+            throw "Policy Already Claimed"
         MAX_CLAIM = policies[flightNumber][departureTime][pnrNumber].premium * 10
 
     var payout U256 = getPolicyPayout(MAX_CLAIM)
