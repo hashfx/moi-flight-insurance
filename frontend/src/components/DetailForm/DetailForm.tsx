@@ -5,10 +5,18 @@ import logic from "@/interface/logic";
 import { useRouter } from "next/navigation";
 
 export default function DetailForm() {
-  const {formDetails, setFormDetails, setOpenClaimModal, setResponseData, selectedPlans, responseData, wallet} = useAuth();
+  const {
+    formDetails,
+    setFormDetails,
+    setOpenClaimModal,
+    setResponseData,
+    selectedPlans,
+    responseData,
+    wallet,
+  } = useAuth();
   const router = useRouter();
- 
-  const handleDetailForm = (e: React.FormEvent<HTMLFormElement>  | any) => {
+
+  const handleDetailForm = (e: React.FormEvent<HTMLFormElement> | any) => {
     e.preventDefault();
     const target = e.target as HTMLInputElement;
     setFormDetails({ ...formDetails, [target.name]: target.value });
@@ -23,19 +31,18 @@ export default function DetailForm() {
       endDestination: responseData.endDestination,
       premiumAmount: selectedPlans.priceInNumber,
       departureTime: responseData.departureTime,
-      pnrNumber : formDetails.pnr,
+      pnrNumber: formDetails.pnr,
     };
     setResponseData(data);
     // logic.PurchasePolicy(wallet, data.userName, data.flightNumber, data.premiumAmount, data.pnrNumber, data.departureTime);
     setOpenClaimModal(false);
     router.push("/dashboard");
-  }
-  return (  
-    <form className='p-6'>
+  };
+  return (
+    <form className="p-6">
       <div className="space-y-12 overflow-y-scroll no-scrollbar">
-
         <div className="border-b border-white/10 pb-12">
-          <h2 className="text-base font-semibold leading-7 text-white">
+          <h2 className="text-xl font-semibold leading-7 text-white">
             Flight Information
           </h2>
           <p className="mt-1 text-sm leading-6 text-gray-400">
@@ -46,16 +53,16 @@ export default function DetailForm() {
             <div className="sm:col-span-3">
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-base font-medium leading-6 text-white"
               >
-                First name
+                First Name
               </label>
               <div className="mt-2">
                 <input
                   type="text"
                   name="firstName"
                   id="firstName"
-                  placeholder="Enter first name"
+                  placeholder="Enter First Name"
                   value={formDetails.firstName}
                   onChange={handleDetailForm}
                   autoComplete="none"
@@ -67,15 +74,15 @@ export default function DetailForm() {
             <div className="sm:col-span-3">
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-base font-medium leading-6 text-white"
               >
-                Last name
+                Last Name
               </label>
               <div className="mt-2">
                 <input
                   type="text"
                   name="lastName"
-                  placeholder="Enter last name"
+                  placeholder="Enter Last Name"
                   value={formDetails.lastName}
                   onChange={handleDetailForm}
                   id="lastName"
@@ -86,18 +93,21 @@ export default function DetailForm() {
             </div>
 
             <div className="col-span-full">
-              <label htmlFor="pnr" className="block text-sm font-medium leading-6 text-white">
+              <label
+                htmlFor="pnr"
+                className="block text-base font-medium leading-6 text-white"
+              >
                 PNR Number
               </label>
               <div className="mt-2">
                 <input
                   type="text"
                   name="pnr"
-                  value = {formDetails.pnr}
-                  onChange = {handleDetailForm}
+                  value={formDetails.pnr}
+                  onChange={handleDetailForm}
                   id="pnr"
                   autoComplete="pnr"
-                  placeholder="e.g Indore, Bhopal, Mumbai ..."
+                  placeholder="Eg. Z8C8DX"
                   className="pl-4 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm  sm:text-sm sm:leading-6 outline-none"
                 />
               </div>
@@ -124,18 +134,18 @@ export default function DetailForm() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-end gap-x-2">
-        <DynamicButton
-          buttonText="Cancel"
-          backgroundColor="bg-Rejection-background"
-          borderColor="border-none"
-          handle={() => setOpenClaimModal(false)}
-        />
+      <div className="mt-4 flex items-center justify-end gap-x-6">
         <DynamicButton
           buttonText="Save"
           backgroundColor="bg-Primary"
           borderColor="border-none"
           handle={handleFormSubmit}
+        />
+        <DynamicButton
+          buttonText="Cancel"
+          backgroundColor="bg-Rejection-background"
+          borderColor="border-none"
+          handle={() => setOpenClaimModal(false)}
         />
       </div>
     </form>
