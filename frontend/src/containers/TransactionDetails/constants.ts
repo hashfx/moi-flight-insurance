@@ -39,4 +39,36 @@ export const transactionData = [
         plan: "Enterprise",
         status: "NA"
     },
+    {
+        flightNumber: "AI-624",
+        arrivalAirportCode: "BHO",
+        destinationAirportCode: "GOI",
+        departureDate: "14th February, 2023",
+        plan: "Enterprise",
+        status: "NA"
+    },
+    {
+        flightNumber: "AI-614",
+        arrivalAirportCode: "BHO",
+        destinationAirportCode: "GOI",
+        departureDate: "14th February, 2023",
+        plan: "Enterprise",
+        status: "NA"
+    },
+    {
+        flightNumber: "AI-664",
+        arrivalAirportCode: "BHO",
+        destinationAirportCode: "GOI",
+        departureDate: "14th February, 2023",
+        plan: "Enterprise",
+        status: "NA"
+    },
+    {
+        flightNumber: "AI-684",
+        arrivalAirportCode: "BHO",
+        destinationAirportCode: "GOI",
+        departureDate: "14th February, 2023",
+        plan: "Enterprise",
+        status: "NA"
+    },
 ]
