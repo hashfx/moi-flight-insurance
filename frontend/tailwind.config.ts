@@ -30,6 +30,7 @@ const config: Config = {
         "Rejection-background": "#531212",
         "Rejection-stroke": "#B32862",
         TextOnTicket: "#8C8E98",
+        SuccessGreen: "#04CF00",
       },
       fontFamily: {
         sans: ["Outfit", "sans-serif"],

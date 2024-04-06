@@ -36,14 +36,23 @@ const Navbar = () => {
             <h1 className="font-bold text-[40px] font-[Poppins]">Finsure</h1>
           </Link>
           {!clicked && (
-            <DynamicButton
-              buttonText={
-                wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"
-              }
-              handle={handleShowConnectModal}
-              borderColor="border-Secondary"
-              backgroundColor="bg-Primary"
-            />
+            <div className="flex items-center px-5 justify-center gap-8">
+              {wallet ? (
+                <Link href={"/transactions"}>
+                  <div className="text-base font-light text-white">
+                    View Transactions
+                  </div>
+                </Link>
+              ) : null}
+              <DynamicButton
+                buttonText={
+                  wallet ? `${truncateStr(wallet.getAddress(), 15)}` : "Connect"
+                }
+                handle={handleShowConnectModal}
+                borderColor="border-Secondary"
+                backgroundColor="bg-Primary"
+              />
+            </div>
           )}
           {wallet && clicked && (
             <ConnectButton
