@@ -213,11 +213,17 @@ const Input = () => {
                   {/* Airport City, Date and Time */}
                   <div className="flex flex-row justify-between items-center text-TextOnTicket">
                     <div>{data.departure_city}</div>
-                    <div>{convertTimestamp(data.actual_departure_local)}</div>
+                    <div>
+                      {data.actual_departure_local
+                        ? convertTimestamp(data.actual_departure_local)
+                        : ""}
+                    </div>
                   </div>
                   {/* Terminal (and other info if available) */}
                   <div className="text-TextOnTicket">
-                    Terminal: {data.departure_terminal}
+                    {data.departure_terminal
+                      ? "Terminal: " + data.departure_terminal
+                      : ""}
                   </div>
                 </div>
                 {/* Flight SVG */}
@@ -257,11 +263,17 @@ const Input = () => {
                   {/* Airport City, Date and Time */}
                   <div className="flex flex-row justify-between items-center text-TextOnTicket">
                     <div>{data.arrival_city}</div>
-                    <div>{convertTimestamp(data.actual_arrival_local)}</div>
+                    <div>
+                      {data.actual_arrival_local
+                        ? convertTimestamp(data.actual_arrival_local)
+                        : ""}
+                    </div>
                   </div>
                   {/* Terminal (and other info if available) */}
                   <div className="text-TextOnTicket">
-                    Terminal: {data.arrival_terminal}
+                    {data.arrival_terminal
+                      ? "Terminal: " + data.arrival_terminal
+                      : ""}
                   </div>
                 </div>
               </div>
