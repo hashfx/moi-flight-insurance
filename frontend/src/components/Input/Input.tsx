@@ -43,39 +43,40 @@ const Input = () => {
   const { flightNumber, setFlightNumber, setResponseData } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   const navigate = useRouter();
-  const [data, setData] = useState<data | null>({
-    actual_arrival_is_estimated: false,
-    actual_arrival_local: "2024-04-08T12:55:26+05:30",
-    actual_arrival_utc: "2024-04-08T07:25:26Z",
-    actual_departure_is_estimated: false,
-    actual_departure_local: "2024-04-08T10:19:46+05:30",
-    actual_departure_utc: "2024-04-08T04:49:46Z",
-    airline_iata: "AI",
-    airline_icao: "AIC",
-    airline_name: "Air India",
-    arrival_city: "Delhi",
-    arrival_gate: "4",
-    arrival_iata: "DEL",
-    arrival_icao: "VIDP",
-    arrival_name: "Delhi Indira Gandhi International Airport",
-    arrival_terminal: "3",
-    codeshares: null,
-    date: "2024-04-08T00:00:00Z",
-    departure_city: "Chennai",
-    departure_iata: "MAA",
-    departure_icao: "VOMM",
-    departure_name: "Chennai International Airport",
-    departure_terminal: "4",
-    family: "A320",
-    flnr: "AI430",
-    model: "A321",
-    reg: "VT-PPW",
-    scheduled_arrival_local: "2024-04-08T13:05:00+05:30",
-    scheduled_arrival_utc: "2024-04-08T07:35:00Z",
-    scheduled_departure_local: "2024-04-08T10:10:00+05:30",
-    scheduled_departure_utc: "2024-04-08T04:40:00Z",
-    status: "landed",
-  });
+  const [data, setData] = useState<data | null>(null);
+  //   {
+  //   actual_arrival_is_estimated: false,
+  //   actual_arrival_local: "2024-04-08T12:55:26+05:30",
+  //   actual_arrival_utc: "2024-04-08T07:25:26Z",
+  //   actual_departure_is_estimated: false,
+  //   actual_departure_local: "2024-04-08T10:19:46+05:30",
+  //   actual_departure_utc: "2024-04-08T04:49:46Z",
+  //   airline_iata: "AI",
+  //   airline_icao: "AIC",
+  //   airline_name: "Air India",
+  //   arrival_city: "Delhi",
+  //   arrival_gate: "4",
+  //   arrival_iata: "DEL",
+  //   arrival_icao: "VIDP",
+  //   arrival_name: "Delhi Indira Gandhi International Airport",
+  //   arrival_terminal: "3",
+  //   codeshares: null,
+  //   date: "2024-04-08T00:00:00Z",
+  //   departure_city: "Chennai",
+  //   departure_iata: "MAA",
+  //   departure_icao: "VOMM",
+  //   departure_name: "Chennai International Airport",
+  //   departure_terminal: "4",
+  //   family: "A320",
+  //   flnr: "AI430",
+  //   model: "A321",
+  //   reg: "VT-PPW",
+  //   scheduled_arrival_local: "2024-04-08T13:05:00+05:30",
+  //   scheduled_arrival_utc: "2024-04-08T07:35:00Z",
+  //   scheduled_departure_local: "2024-04-08T10:10:00+05:30",
+  //   scheduled_departure_utc: "2024-04-08T04:40:00Z",
+  //   status: "landed",
+  // }
   const getDate = (daysToAdd = 0) => {
     const today = new Date();
     const tomorrow = new Date();
@@ -154,12 +155,7 @@ const Input = () => {
     }
   };
   return (
-    <div
-      className={
-        "w-full flex flex-row space-x-5 " +
-        (openModal ? "backdrop:blur-md" : "")
-      }
-    >
+    <div className={"w-full flex flex-row space-x-5"}>
       <input
         type="text"
         value={flightNumber}
@@ -169,7 +165,7 @@ const Input = () => {
       />
       <button
         onClick={() => {
-          // handlePnr();
+          handlePnr();
           setOpenModal(true);
         }}
         className="bg-[#132C51] px-6 py-1 border border-[#285FB3] rounded-md disabled:bg-[#132C51]/70 disabled:cursor-not-allowed "
@@ -226,6 +222,27 @@ const Input = () => {
                 </div>
                 {/* Flight SVG */}
                 <div>
+                  {/* <div className="relative w-max py-5"> */}
+                  {/* <Image
+                    src={"/dottedLine.svg"}
+                    height={1}
+                    width={200}
+                    className="absolute top-[50%] px-5"
+                    alt="dotted-line"
+                  />
+                  <Image
+                    src={"/planeSVG.svg"}
+                    width={42}
+                    height={42}
+                    alt="flightSVG"
+                    className={
+                      "absolute " + data.status === "live"
+                        ? "left-[50%]"
+                        : data.status === "landed"
+                        ? "right-0"
+                        : "left-0"
+                    }
+                  /> */}
                   <Image
                     src={"/flightSVG.svg"}
                     width={150}
@@ -258,11 +275,17 @@ const Input = () => {
                       ? "bg-Rejection-background border border-Rejection-stroke"
                       : "bg-Primary border border-Secondary"
                   } rounded-lg text-base font-medium text-white flex items-center gap-2 disabled:cursor-not-allowed`}
-                  onClick={() => {}}
-                  type="submit"
-                  disabled={data.status !== ("live" || "landed") ? true : false}
+                  onClick={() => {
+                    navigate.push("/plans");
+                  }}
+                  // type="submit"
+                  disabled={
+                    data.status === "live" || data.status === "landed"
+                      ? true
+                      : false
+                  }
                 >
-                  {data.status !== ("live" || "landed")
+                  {data.status === "live" || data.status === "landed"
                     ? data.status
                     : "Proceed to Plans"}
                   <Image
