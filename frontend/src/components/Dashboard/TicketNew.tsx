@@ -10,8 +10,8 @@ interface TicketProps {
   insuranceNumber: string;
   maxClaimable: number;
   premiumPaid: number;
-  arrivalAirportCode: string;
-  arrivalName: string;
+  sourceAirportCode: string;
+  sourceName: string;
   destinationAirportCode: string;
   destinationName: string;
   status: "Delayed" | "On Time" | "Not Started" | "Canceled" | any;
@@ -26,8 +26,8 @@ const TicketNew = ({
   insuranceNumber,
   maxClaimable,
   premiumPaid,
-  arrivalAirportCode,
-  arrivalName,
+  sourceAirportCode,
+  sourceName,
   destinationAirportCode,
   destinationName,
   status,
@@ -86,7 +86,7 @@ const TicketNew = ({
         </div>
         {/* TRAVEL */}
         <div className="flex items-center justify-between w-full">
-          <CityField Heading={arrivalAirportCode} FullName={arrivalName} />
+          <CityField Heading={sourceAirportCode} FullName={sourceName} />
           <div className="flex items-center justify-center bg-[#20262E] h-9 px-6 py-2 rounded-[32px]">
             <Image
               src={"/airplane.svg"}

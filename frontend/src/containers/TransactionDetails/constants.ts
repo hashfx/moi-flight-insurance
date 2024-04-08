@@ -1,7 +1,7 @@
 export const transactionData = [
     {
         flightNumber: "AI-690",
-        arrivalAirportCode: "IDR",
+        sourceAirportCode: "IDR",
         destinationAirportCode: "BHO",
         departureDate: "06th April, 2024",
         plan: "Starter",
@@ -9,7 +9,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-420",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "IDR",
         departureDate: "12th March, 2024",
         plan: "Premium",
@@ -17,7 +17,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-121",
-        arrivalAirportCode: "DEL",
+        sourceAirportCode: "DEL",
         destinationAirportCode: "BHO",
         departureDate: "16th August, 2023",
         plan: "Enterprise",
@@ -25,7 +25,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-226",
-        arrivalAirportCode: "BOM",
+        sourceAirportCode: "BOM",
         destinationAirportCode: "DEL",
         departureDate: "11th April, 2023",
         plan: "Starter",
@@ -33,7 +33,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-604",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "GOI",
         departureDate: "14th February, 2023",
         plan: "Enterprise",
@@ -41,7 +41,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-624",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "GOI",
         departureDate: "14th February, 2023",
         plan: "Enterprise",
@@ -49,7 +49,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-614",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "GOI",
         departureDate: "14th February, 2023",
         plan: "Enterprise",
@@ -57,7 +57,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-664",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "GOI",
         departureDate: "14th February, 2023",
         plan: "Enterprise",
@@ -65,7 +65,7 @@ export const transactionData = [
     },
     {
         flightNumber: "AI-684",
-        arrivalAirportCode: "BHO",
+        sourceAirportCode: "BHO",
         destinationAirportCode: "GOI",
         departureDate: "14th February, 2023",
         plan: "Enterprise",

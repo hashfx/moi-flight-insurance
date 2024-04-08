@@ -18,7 +18,7 @@ const TransactionDetails = () => {
           {/* Table Frame */}
           <div className="w-full flex flex-col gap-5">
             {/* Header */}
-            <div className="flex justify-between bg-Background text-base text-TextOnTicket font-medium border-b border-black px-8 mx-3">
+            <div className="flex justify-between bg-Background text-base text-TextOnTicket font-medium px-8 mr-2 ml-1">
               {fields.map((singleField, index) => {
                 return (
                   <div className="flex justify-center w-1/6" key={index}>
@@ -32,7 +32,7 @@ const TransactionDetails = () => {
               {transactionData.map((singleItem) => {
                 const {
                   flightNumber,
-                  arrivalAirportCode,
+                  sourceAirportCode,
                   destinationAirportCode,
                   departureDate,
                   plan,
@@ -47,7 +47,7 @@ const TransactionDetails = () => {
                       {flightNumber}
                     </div>
                     <div className="flex justify-center w-1/6">
-                      {arrivalAirportCode}
+                      {sourceAirportCode}
                     </div>
                     <div className="flex justify-center w-1/6">
                       {destinationAirportCode}
