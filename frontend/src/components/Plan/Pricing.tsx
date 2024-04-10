@@ -68,11 +68,11 @@ const Pricing = () => {
     refillTime,
     setSelectedPlans,
     balance,
-    selectedPlans
+    selectedPlans,
   } = useAuth();
   const handlePlans = async (plan: PlanDetail) => {
     if (!openClaimModal) setSelectedPlans(plan);
-    if (balance && refillTime !== 'NaN:NaN:NaN') setOpenClaimModal(true);
+    if (balance && refillTime !== "NaN:NaN:NaN") setOpenClaimModal(true);
   };
 
   const router = useRouter();
@@ -160,12 +160,15 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-      {openClaimModal && refillTime === "00:00:00" && balance < selectedPlans.priceInNumber && balance && (
-        <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
-          <TokenModal />
-        </div>
-      )}
-      {openClaimModal && balance >= selectedPlans.priceInNumber && balance &&  (
+      {openClaimModal &&
+        refillTime === "00:00:00" &&
+        balance < selectedPlans.priceInNumber &&
+        balance && (
+          <div className="absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+            <TokenModal />
+          </div>
+        )}
+      {openClaimModal && balance >= selectedPlans.priceInNumber && balance && (
         <Modal>
           <DetailForm />
         </Modal>
