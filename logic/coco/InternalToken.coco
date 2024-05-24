@@ -1,0 +1,133 @@
+coco FlightInsurance
+
+// Local constant variables 
+const CLAIM_AMOUNT U256 = 20000
+const CLAIM_INTERVAL I256 = 86400  // every 1 day
+
+////////////////////////
+// Internal Functions
+////////////////////////
+
+// Note: functions can only be called internally within the logic
+
+func transfer!(from Address, to Address, value U256):
+    if from == Address(0):
+        throw "Invalid Sender Address"
+    if to == Address(0):
+        throw "Invalid Recipient Address"
+    
+    mutate balanceOf <- FlightInsurance.State.balanceOf:
+        if balanceOf[from] < value:
+            throw "Insufficient Balance"
+        
+        balanceOf[from] -= value
+        balanceOf[to] += value
+
+
+func mint!(account Address, value U256):
+    if account == Address(0):
+        throw "Invalid Receiver Address"
+
+    mutate totalSupply <- FlightInsurance.State.totalSupply:
+        totalSupply += value
+
+    mutate balanceOf <- FlightInsurance.State.balanceOf:
+        balanceOf[account] += value
+
+
+func burn!(account Address, value U256):
+    if account == Address(0):
+        throw "Invalid Sender Address"
+
+    mutate totalSupply <- FlightInsurance.State.totalSupply:
+        totalSupply -= value
+
+    mutate balanceOf <- FlightInsurance.State.balanceOf:
+        balanceOf[account] -= value
+
+
+////////////////////////
+// Mutate/Write Endpoints
+///////////////////////
+
+// Note: All Endpoints can only be called externally and not within the logic
+
+endpoint invokable Transfer!(to Address, value U256):
+    transfer!(from: Address(Sender), to, value)
+
+
+endpoint invokable Approve!(spender Address, value U256):
+    if spender == Address(0):
+        throw "Invalid Spender Address"
+
+    var owner = Address(Sender)
+
+    mutate allowances <- FlightInsurance.State.allowances:
+        allowances[owner][spender] = value
+
+
+endpoint invokable TransferFrom!(from Address, to Address, value U256):
+    var spender = Address(Sender)
+    
+    mutate allowances <- FlightInsurance.State.allowances:
+        if allowances[from][spender] < value:
+            throw "Insufficient allowances"
+
+        allowances[from][spender] -= value
+
+    transfer!(from, to, value)
+
+endpoint invokable Claim!():
+    var account = Address(Sender)
+    observe nextClaims <- FlightInsurance.State.nextClaims:
+        if nextClaims[account] > I256(Env.Timestamp()):
+            throw "Next Claim at {nextClaims[address]}"
+
+    mint!(account, value: CLAIM_AMOUNT)
+
+    mutate nextClaims <- FlightInsurance.State.nextClaims:
+        nextClaims[account] = I256(Env.Timestamp()) + CLAIM_INTERVAL
+
+
+////////////////////////
+// Observe/Read Endpoints
+///////////////////////
+
+endpoint invokable Name()->(name String):
+    observe name <- FlightInsurance.State.name
+
+endpoint invokable Symbol()->(symbol String):
+    observe symbol <- FlightInsurance.State.symbol
+
+endpoint invokable Decimals()->(decimals U256):
+    observe decimals <- FlightInsurance.State.decimals
+
+endpoint invokable TotalSupply()->(totalSupply U256):
+    observe totalSupply <- FlightInsurance.State.totalSupply
+
+endpoint invokable ClaimAmount()->(claimAmount U256):
+    yield claimAmount CLAIM_AMOUNT
+
+endpoint invokable ClaimInterval()->(claimInterval I256):
+    yield claimInterval CLAIM_INTERVAL
+
+endpoint invokable NextClaim(account Address)->(nextClaim I256):
+    observe nextClaims <- FlightInsurance.State.nextClaims:
+        yield nextClaim nextClaims[account]
+
+endpoint invokable BalanceOf(account Address)->(balance U256):
+    observe balanceOf <- FlightInsurance.State.balanceOf:
+        yield balance balanceOf[account]
+
+endpoint invokable Allowances(owner Address, spender Address)->(allowance U256):
+    observe allowances <- FlightInsurance.State.allowances:
+        yield allowance allowances[owner][spender]
+
+////////////////////////
+// Note: This file of FlightInsurance should be strictly used only
+// for Internal Token related logic but not the token state variables. 
+// As the logic module can only declare state persistent once
+// The global module name is still FlightInsurance and will be seen
+// a one logic ... this implementation of splitting token logic and app logic
+// is only for modularity
+////////////////////////

@@ -1,173 +1,118 @@
 coco FlightInsurance
 
 state persistent:
-    //token variables
+    // Internal Token state variables
     name String
     symbol String
-    decimals U64
-    totalSupply U64
-    balanceOf Map[Address]U64
-    allowances Map[Address]Map[Address]U64
-    nextClaims Map[Address]I64
-    //insurance variables
-    records []InsuranceRecord
+    decimals U256
+    totalSupply U256
+    balanceOf Map[Address]U256
+    allowances Map[Address]Map[Address]U256
+    nextClaims Map[Address]I256
+    
+    yourPolicies Map[Address][]Policy
+    // Map of FlightNo. => Departure Time => PNR No. => Policy
+    policies Map[String]Map[U256]Map[String]Policy 
+    // Map of FlightNo. => Departure Time => Delayed Time
+    activePolicies U256 
     admin Address
 
+// Keeping these as constants for now
+const DEPARTURE_INTERVAL U256 = 7200
 
-const CLAIM_AMOUNT U64 = 100000
-const CLAIM_INTERVAL I64 = 30  // every 1 hour
+class Policy : 
+    field holder Address
+    field insuranceNumber String
+    field Name String
+    field claimStatus Bool
+    field flightNo String
+    field start String // Starting airport location
+    field end String   // Ending airport location
+    field premium U256
+    field departureTime U256
+    field pnrNo String
+    field seatNo String
+    field status U256 // 0 -> not updated, 1 -> on time, 2-> delayed 
 
-class InsuranceRecord:
-    field recordId U64
-    field pnrNumber U64
-    field premiumAmount U256
-    field insuranceAmount U256
-    field status String
-
-endpoint deployer Init!(name String, symbol String, decimals U64, totalSupply U64):
-    mutate Address(Sender)-> FlightInsurance.State.admin
+endpoint deployer Init!(name String, symbol String, decimals U256, totalSupply U256):
+    // For Token Initializations
     mutate name -> FlightInsurance.State.name
     mutate symbol -> FlightInsurance.State.symbol
     mutate decimals -> FlightInsurance.State.decimals
-
     mint!(account: Address(Sender), value: totalSupply)
-    // var record InsuranceRecord
-     // record.init(0, 0, 0, 0, "Active")
 
-////////////////////////
-// Internal Functions
-////////////////////////
+    mutate Address(Sender) -> FlightInsurance.State.admin
+
+///////////////////////
+// FUNCTIONS
+//////////////////////
+
 func onlyAdmin():
+    // Check if the address of the sender is address of the admin 
     observe admin <- FlightInsurance.State.admin:
         if(Address(Sender)!=admin):
-            throw "You are not authorized to perform this action"
+            throw "Not Authorized"
 
-func transfer!(from Address, to Address, value U64):
-    if from == Address(0):
-        throw "Invalid Sender Address"
-    if to == Address(0):
-        throw "Invalid Recipient Address"
+
+func purchasePolicyChecks(flightNumber String, departureTime U256, pnrNumber String):
+    var currentTime = U256(Env.Timestamp())
+
+    if(departureTime > currentTime + DEPARTURE_INTERVAL): 
+        throw "Policy should be bought 2 hours before departure time"
+
+    observe policies <- FlightInsurance.State.policies:
+        if policies[flightNumber][departureTime][pnrNumber]?:
+            throw "Policy Already Exist"
+
+
+
+func getPolicyPayout(MAX_CLAIM U256) -> (payout U256):
+    // var claimAmt = totalFunds/activePolicies
+    // if claimAmt > maxClaim ? return maxClaim
     
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        if balanceOf[from] < value:
-            throw "Insufficient Balance"
-        
-        balanceOf[from] -= value
-        balanceOf[to] += value
+    // min(maxClaim amount, (totalFunds/activePolicies))
+    var claimAmount U256
+    observe balanceOf, activePolicies <- FlightInsurance.State.balanceOf, FlightInsurance.State.activePolicies:
+        claimAmount = balanceOf[Address(FlightInsurance)]/activePolicies
+    if(claimAmount > MAX_CLAIM):
+        return (payout: MAX_CLAIM)
+    return (payout: claimAmount)
 
-func mint!(account Address, value U64):
-    if account == Address(0):
-        throw "Invalid Receiver Address"
 
-    mutate totalSupply <- FlightInsurance.State.totalSupply:
-        totalSupply += value
-
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        balanceOf[account] += value
-
-func burn!(account Address, value U64):
-    if account == Address(0):
-        throw "Invalid Sender Address"
-
-    mutate totalSupply <- FlightInsurance.State.totalSupply:
-        totalSupply -= value
-
-    mutate balanceOf <- FlightInsurance.State.balanceOf:
-        balanceOf[account] -= value
-
-////////////////////////
-// Mutate Endpoints
-////////////////////////
-
-endpoint invokable addInsuranceRecord!(pnrNumber U64, premiumAmount U256, insuranceAmount U256, status String)->(record InsuranceRecord):
-    onlyAdmin()
-    mutate records <- FlightInsurance.State.records:
-        var newRecord = InsuranceRecord{recordId: len(records), pnrNumber: pnrNumber, premiumAmount: premiumAmount, insuranceAmount: insuranceAmount, status: status}
-        records=append(records,newRecord)
-        yield record newRecord
-
-endpoint invokable claimInsurance!(pnrNumber U64, recordId U64):
-    onlyAdmin()
-    mutate records <- FlightInsurance.State.records:
-        var record = records[recordId]
-        if(record.pnrNumber==pnrNumber):
-            record.status="Claimed"
-            records[recordId]=record
-        else:
-            throw "Record not found"
-
-endpoint invokable Transfer!(to Address, value U64):
-    transfer!(from: Address(Sender), to, value)
-
-endpoint invokable Approve!(spender Address, value U64):
-    if spender == Address(0):
-        throw "Invalid Spender Address"
-
-    var owner = Address(Sender)
-
-    mutate allowances <- FlightInsurance.State.allowances:
-        allowances[owner][spender] = value
-
-endpoint invokable TransferFrom!(from Address, to Address, value U64):
-    var spender = Address(Sender)
-    
-    mutate allowances <- FlightInsurance.State.allowances:
-        if allowances[from][spender] < value:
-            throw "Insufficient allowances"
-
-        allowances[from][spender] -= value
-
-    transfer!(from, to, value)
-
-endpoint invokable Claim!():
-    var account = Address(Sender)
-    observe nextClaims <- FlightInsurance.State.nextClaims:
-        if nextClaims[account] > Env.Timestamp():
-            throw "Next Claim at {nextClaims[address]}"
-
-    mint!(account, value: CLAIM_AMOUNT)
-
-    mutate nextClaims <- FlightInsurance.State.nextClaims:
-        nextClaims[account] = Env.Timestamp() + CLAIM_INTERVAL
-
-////////////////////////
-// Observe Endpoints
 ///////////////////////
+// Mutate/Write Endpoints
+//////////////////////
 
-endpoint invokable getInsuranceRecord(recordId U64)-> (records []InsuranceRecord):
-    observe records <- FlightInsurance.State.records
+endpoint invokable PurchasePolicy!(insuranceNo String, userName String, flightNumber String, startDestination String, endDestination String, premiumAmount U256, departureTime U256, pnrNumber String):
 
-endpoint invokable Name()->(name String):
-    observe name <- FlightInsurance.State.name
+    var user = Address(Sender)
+    purchasePolicyChecks(flightNumber, departureTime, pnrNumber)
+    transfer!(from : user, to : Address(FlightInsurance), value : premiumAmount)
+    var newPolicy = Policy{ holder: user, insuranceNumber : insuranceNo , Name : userName, claimStatus: false,flightNo: flightNumber, start : startDestination, end : endDestination, premium: premiumAmount, departureTime: departureTime, pnrNo: pnrNumber}
+    mutate policies, activePolicies, yourPolicies <- FlightInsurance.State.policies, FlightInsurance.State.activePolicies, FlightInsurance.State.yourPolicies:
+        
+        policies[flightNumber][departureTime][pnrNumber] = newPolicy
+        yourPolicies[user] = append(yourPolicies[user], newPolicy)
+        activePolicies += 1
 
-endpoint invokable Symbol()->(symbol String):
-    observe symbol <- FlightInsurance.State.symbol
 
-endpoint invokable Decimals()->(decimals U64):
-    observe decimals <- FlightInsurance.State.decimals
+endpoint invokable ClaimPolicy!(flightNumber String, departureTime U256, pnrNumber String):
 
-endpoint invokable TotalSupply()->(totalSupply U64):
-    observe totalSupply <- FlightInsurance.State.totalSupply
+    var policyHolder = Address(Sender)
+    var MAX_CLAIM U256
+    
+    observe policies <- FlightInsurance.State.policies:
+        if(policies[flightNumber][departureTime][pnrNumber].claimStatus != false):
+            throw "Policy Already Claimed"
+        MAX_CLAIM = policies[flightNumber][departureTime][pnrNumber].premium * 10
 
-endpoint invokable ClaimAmount()->(claimAmount U64):
-    yield claimAmount CLAIM_AMOUNT
+    var payout U256 = getPolicyPayout(MAX_CLAIM)
+    transfer!(from: Address(FlightInsurance), to: policyHolder, value: payout)
 
-endpoint invokable ClaimInterval()->(claimInterval I64):
-    yield claimInterval CLAIM_INTERVAL
+    mutate policies, activePolicies <- FlightInsurance.State.policies, FlightInsurance.State.activePolicies:
+        policies[flightNumber][departureTime][pnrNumber].claimStatus = true
+        activePolicies -= 1
 
-endpoint invokable NextClaim(account Address)->(nextClaim I64):
-    observe nextClaims <- FlightInsurance.State.nextClaims:
-        yield nextClaim nextClaims[account]
-
-endpoint invokable BalanceOf(account Address)->(balance U64):
-    observe balanceOf <- FlightInsurance.State.balanceOf:
-        yield balance balanceOf[account]
-
-endpoint invokable Allowances(owner Address, spender Address)->(allowance U64):
-    observe allowances <- FlightInsurance.State.allowances:
-        yield allowance allowances[owner][spender]
- 
-    // @view
-    // func getInsuranceRecord(recordId: U64)-> insuranceRecord:
-    //     let record = Self.insuranceRecord[recordId]
-    //     return record
+endpoint invokable GetPolicy(account Address)->(userPolicies []Policy):
+    observe yourPolicies <- FlightInsurance.State.yourPolicies:
+        yield userPolicies yourPolicies[account]

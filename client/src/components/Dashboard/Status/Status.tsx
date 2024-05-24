@@ -9,7 +9,7 @@ import PrimaryDisabled from "@/components/Buttons/PrimaryDisabled";
 import SecondaryDisabled from "@/components/Buttons/SecondaryDisabled";
 import FlightOnTime from "./FlightOnTime";
 const Status = () => {
-  const [isFlightOnTime, setIsFlightOnTime] = useState(true);
+  const [isFlightOnTime, setIsFlightOnTime] = useState(false);
   return (
     <div className=" my-6 flex flex-col justify-start gap-6">
       {/* Main Box */}
